@@ -1,4 +1,4 @@
-module rounded_rect_y (r, l, h) {
+module rounded_rect_x (r, l, h) {
    $rect_l = l;
    $rect_w = 4 * r;
    $rect_h = h;
@@ -15,19 +15,19 @@ module rounded_rect_y (r, l, h) {
    }
 }
 
-module rounded_rect_p_y (r, l, h) {
+module rounded_rect_p_x (r, l, h) {
    difference () {
-      rounded_rect_y(r, l, h);
+      rounded_rect_x(r, l, h);
       translate([2*r, 2*r, -1])  {
          cylinder(r=r, h=h+2);
       }  
-      translate([l+2*r, 2*r, -1])  {
+      translate([2*r, l+2*r, -1])  {
          cylinder(r=r, h=h+2);
       } 
    }
 }
 
-module rounded_rect_x (r, l, h) {
+module rounded_rect_y (r, l, h) {
    $rect_l = l;
    $rect_w = 4 * r;
    $rect_h = h;
@@ -44,9 +44,10 @@ module rounded_rect_x (r, l, h) {
    }
 }
 
-module rounded_rect_p_x (r, l, h) {
+
+module rounded_rect_p_y (r, l, h) {
    difference () {
-      rounded_rect_x(r, l, h);
+      rounded_rect_y(r, l, h);
       translate([2*r, 2*r, -1])  {
          cylinder(r=r, h=h+2);
       }  
