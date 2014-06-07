@@ -1,4 +1,4 @@
-$rail_w = 13; // how far apart do the inner periphery
+$rail_w = 14.76; // how far apart do the inner periphery
               // of the bearings need to be - the thickness 
               // of an open beam profile?
 
@@ -6,7 +6,7 @@ $inch = 25.4;
 $bearing_r = 11;
 $nominal_bolt_r = ($inch * 5/16 * 0.5) + 0.2;
 //          5/16 inch bolt size *radius+ slop
-$bearing_hole_r =  $nominal_bolt_r;
+$bearing_hole_r =  7.9/2;
 $flat_thick = $inch/8;
 $slot_w = 3;
 $slot_l = 20;
@@ -40,14 +40,14 @@ module bearing_mount () {
                     $bearing_hole_r*2 + ($block_l)/2 - 
                           ($rail_w/2 + $bearing_r),
                     -1]) {
-              cylinder(r=$bearing_hole_r, h=$flat_thick+2);
+              cylinder(r=$nominal_bolt_r, h=$flat_thick+2);
           }
           // upper bolt hole
           translate([$bearing_hole_r*2,
                      $bearing_hole_r*2 + ($block_l)/2 + 
                          ($rail_w/2 + $bearing_r),
                      -1]) {
-            cylinder(r=$bearing_hole_r, h=$flat_thick+2);
+            cylinder(r=$nominal_bolt_r, h=$flat_thick+2);
           }
           // lower slot
 			translate([$bearing_hole_r*2 - $slot_w/2,
@@ -63,93 +63,26 @@ module bearing_mount () {
                     -1]) {
              cube([$slot_w, $slot_l, $flat_thick+2]); 
           }
-
-
       }
 }
 
-$margin_space = 5;
+$margin_space = 0;
 
 module make_mounts () {
-	translate([0,0,0]) {
-		bearing_mount();
-	}
-	translate([$bearing_hole_r*4 + $margin_space,0,0]) {
-		bearing_mount();
-	}
-	translate([2* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}
-	translate([3* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([4* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([5* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([6* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}
-	translate([7* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([8* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([9* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([10* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([11* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
-	translate([12* ($bearing_hole_r*4 + $margin_space),0,0]) {
-		bearing_mount();
-	}	
 
-	translate([0,$vert,0]) {
-		bearing_mount();
+   for (offset = [0:14] ) {
+		translate([(offset * $bearing_hole_r*5) + $margin_space,0,0]) {
+			bearing_mount();
+		}
 	}
-	translate([$bearing_hole_r*4 + $margin_space,$vert,0]) {
-		bearing_mount();
-	}
-	translate([2* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}
-	translate([3* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([4* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([5* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([6* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}
-	translate([7* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([8* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([9* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([10* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([11* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
-	translate([12* ($bearing_hole_r*4 + $margin_space),$vert,0]) {
-		bearing_mount();
-	}	
+	
+   for (offset = [0:14] ) {
+		translate(
+	       [offset * $bearing_hole_r*5 + $margin_space,$vert,0]
+               ) {
+			bearing_mount();
+		}
+   }	
 }
 
 $2d = 1;
