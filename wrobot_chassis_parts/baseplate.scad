@@ -130,8 +130,11 @@ module top_plate() {
       translate([$slab_width-6,0,0]) {
 	      slots(3,10);
       }
-      translate([20,15,-1]) {
+      translate([20,20,-1]) {
           duemilanove_hole_pattern_y($eigth+2);
+      }
+      translate([0,3,0]) {
+         end_slots(3,10);
       }
    }
 }
