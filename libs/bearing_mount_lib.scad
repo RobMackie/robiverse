@@ -69,3 +69,51 @@ if (1 == $pierced) {
       rounded_rect_y(r=5, l=60, h=6.35);
    }
 }
+
+module mitered_box_x (ww, ll, hh) {
+   $rr=ww/3;
+   $lll = ll - 2*$rr; 
+   translate ([$rr,$rr,0]) {
+      minkowski() {
+         cube([$lll,$rr,hh]);
+         cylinder(r=$rr,h=hh);
+      }
+   }
+}
+
+module mitered_box_y (ww, ll, hh) {
+   $rr=ww/3;
+   $lll = ll - 2*$rr; 
+   translate ([$rr,$rr,0]) {
+      minkowski() {
+         cube([$rr,$lll,hh]);
+         cylinder(r=$rr,h=hh);
+      }
+   }
+}
+
+module duemilanove_hole_pattern_x (depth) {
+    translate([0,0,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+    translate([0,27.9,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+    translate([50.8,27.9 + 15.2,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+}
+
+module duemilanove_hole_pattern_y (depth) {
+    translate([0,0,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+    translate([27.9,0,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+    translate([27.9 + 15.2, 50.8,0]) {
+       cylinder(r=1.5,h=depth);
+    }
+}
+
+

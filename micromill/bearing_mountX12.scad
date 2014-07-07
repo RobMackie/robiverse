@@ -70,13 +70,13 @@ $margin_space = 0;
 
 module make_mounts () {
 
-   for (offset = [0:14] ) {
+   for (offset = [0:11] ) {
 		translate([(offset * $bearing_hole_r*5) + $margin_space,0,0]) {
 			bearing_mount();
 		}
 	}
 	
-   for (offset = [0:14] ) {
+   for (offset = [0:11] ) {
 		translate(
 	       [offset * $bearing_hole_r*5 + $margin_space,$vert,0]
                ) {
