@@ -21,7 +21,7 @@ module make_parts() {
       exterior_half_circle_y(40,10,14);
    } 
    translate([0,65,0]) {
-      for (v = [0:3]) {
+      for (v = [0:2]) {
          for (h = [0:1]) {
             translate([85 * h,45*v,0]) {
                exterior_half_circle_y(40,10,14);
