@@ -116,4 +116,15 @@ module duemilanove_hole_pattern_y (depth) {
     }
 }
 
-
+module workspace_bounds(x, y) {
+   translate([-5, -5, 0]) {
+      difference() {
+         translate([0,0,0]) {
+             cube([x+10,y+10,$eigth]);
+         }
+         translate([5,5,-1]) {
+             cube([x,y,$eigth+2]);
+         }
+      }
+   }
+}

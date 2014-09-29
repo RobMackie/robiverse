@@ -11,7 +11,7 @@ $2d = 0;              // set to one for final rendering as
                       // 2d projection, before exporting as 
                       // .dxf format file
 
-$slot_width = 3.0;      // thickness of material
+$slot_width = 3.56;      // thickness of material
 $rotating_slots = 2;  // is this used?
 $center_hole = 0;     // true puts a hole in disk
 
@@ -23,61 +23,35 @@ module make_parts() {
 translate([2, -1, 0]) {
    // make a set of inner pieces
    translate([10,2.5,0]){
-      make_full_circle_with_slots(30, 18, 8);
+      make_full_circle_with_slots(50, 16, 10);
    } 
-   translate([150,2.5,0]){
-      make_full_circle_with_slots(30, 18, 8);
-   }
-//   translate([81,240.5,0]){
-//      make_full_circle_with_slots(30, 18, 8);
-//   }
-//   translate([218,240,0]){
-//      make_full_circle_with_slots(30, 18, 8);
-//   }
+
+
    // make integration fans
-   translate([1,60,0]) {
+   translate([1,120,0]) {
       // grid of h x v elements
-      for (h = [0:2]) {
-          for (v = [0:4]) {
+      for (h = [0:1]) {
+          for (v = [0:2]) {
             //jiggle and joggle them to fit workspace
-            translate([69 * h,46*v,0]) {
+            translate([130 * h,58*v,0]) {
                 // flip half of them for tighter fit
-                if (h%2) {
-                   translate([80, 0, 0]) {
-                      rotate([0,0,180]) {
-                         exterior_half_circle_y(40,10,12);
-                      }
-                   }
-                } else {
-                   exterior_half_circle_y(40,10,12);
-                }
+                   exterior_half_circle_y(60,10,14);
+               
             } 
          }
       }
    }
-   translate([263, 2.5, 0]) {
-      rotate([0,0,90]) {
-         exterior_half_circle_y(40,10,12);
-      }
-   }
-   translate([218,0, 0]) {
-      rotate([0,0,270]) {
-         translate([-152,0,0]) {
-            exterior_half_circle_y(40,10,12);
-         }
-      }
-   }
-   translate([263,144, 0]) {
-      rotate([0,0,90]) {
-         translate([0,0,0]) {
-            exterior_half_circle_y(40,10,12);
-         }
-      }
-   }
-   translate([218,0, 0]) {
-      rotate([0,0,270]) {
-         translate([-294,0,0]) {
-            exterior_half_circle_y(40,10,12);
+   // make integration fans
+   translate([130,1,0]) {
+      // grid of h x v elements
+      for (h = [0:0]) {
+          for (v = [0:1]) {
+            //jiggle and joggle them to fit workspace
+            translate([130 * h,60*v,0]) {
+                // flip half of them for tighter fit
+                   exterior_half_circle_y(60,10,14);
+               
+            } 
          }
       }
    }
@@ -85,22 +59,18 @@ translate([2, -1, 0]) {
 }
 
 module exterior_half_circle_y(radius, center, slot) {
-// measuring stick
-//    translate ([28,2,0]) {
-//        cube([1,13.5,1]);
-//    }
     difference() {
        translate([0, 0, 0]) {
           half_circle_y(radius);
        }
-       translate([radius-(radius/3),center-4,-1]) {
+       translate([radius-(radius/3),center,-1]) {
           cube([$slot_width,center,$eigth+2]);
        }
-       translate([radius+(radius/3)-$slot_width,center-4,-1]) {
+       translate([radius+(radius/3)-$slot_width,center,-1]) {
           cube([$slot_width,center,$eigth+2]);
        }
        translate([2*radius/3, -1, -1]) {
-          cube([2*radius/3,center+1.1-4,$eigth+2]);
+          cube([2*radius/3,center+1.1,$eigth+2]);
        }
        translate([0,-1,-1]) {
           cube([2*radius,2+1,$eigth+2]);
