@@ -1,5 +1,3 @@
-use <../libs/bearing_mount_lib.scad>
-
 $inch = 25.4;
 $half = $inch/2;
 $quarter = $inch/4;
@@ -9,7 +7,6 @@ $thirtysecondth = $inch/32;
 
 $slot_width = 3;
 
-$rotating_slots = 2;
 
 $fn=128;
 
