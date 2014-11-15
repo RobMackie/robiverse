@@ -14,7 +14,7 @@ $rotating_slots = 2;
 $fn=128;
 
 module make_parts() {
-   make_exterior_bounds(292.1, 317.0);
+//   make_exterior_bounds(292.1, 317.0);
    translate([5,5,0]) {
 	   translate([10,2.5,0]){
 	      make_full_circle_with_slots(30, 12, 10);
