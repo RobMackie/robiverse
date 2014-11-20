@@ -136,6 +136,12 @@ module top_plate() {
       translate([0,3,0]) {
          end_slots(3,10);
       }
+	   // rear wheel well
+	   translate([$slab_width/2 - $rear_wheel_slot/2, 
+	              $slab_length-$rear_wheel_diam,
+	              -1]) {
+	      cube([$rear_wheel_slot, $rear_wheel_diam,$eigth+2]);
+	   }
    }
 }
 
