@@ -18,7 +18,7 @@ $center_hole = 0;     // true puts a hole in disk
 $fn=128;
 
 module make_parts() {
-//  workspace_bounds(265,300);
+  workspace_bounds(265,300);
 // translation for final fit to workspace
 translate([2, -1, 0]) {
    // make a set of inner pieces
