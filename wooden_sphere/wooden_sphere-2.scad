@@ -15,10 +15,6 @@ $eigth = $inch/8;
 $sixteenth = $inch/16;
 $thirtysecondth = $inch/32;
 
-$2d = 0;              // set to one for final rendering as 
-                      // 2d projection, before exporting as 
-                      // .dxf format file
-
 $slot_width = 3.0;      // thickness of material
 $rotating_slots = 2;  // is this used?
 $center_hole = 0;     // true puts a hole in disk
