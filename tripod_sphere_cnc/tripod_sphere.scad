@@ -5,49 +5,65 @@ $eigth = $inch/8;
 $sixteenth = $inch/16;
 $thirtysecondth = $inch/32;
 
-$slot_width = 3;
+$slot_width = 2.5; // was 2.2 (too small)
+$height = 2;
 
 
 $fn=128;
 
 module make_parts() {
-//   make_exterior_bounds(292.1, 317.0);
-   translate([5,5,0]) {
-	   translate([10,2.5,0]){
-	      make_full_circle_with_slots(30, 12, 10);
+   // make_exterior_bounds(152.4,152.4);
+
+   translate([0,2,0]) {
+	   translate([5,2.5,0]){
+	      make_full_circle_with_slots(11, 6, 4);
 	   }
-	   translate([85,15,0]) {
-	      exterior_half_circle_y(40,5,14);
+	   translate([41,2.5,0]){
+	      make_full_circle_with_slots(11, 6, 4);
 	   } 
-	   translate([0,65,0]) {
+
+      /*
+	   translate([45,15,0]) {
+	      exterior_half_circle_y(15,3,4);
+	   } 
+      */
+	   translate([5,35,0]) {
 	      for (v = [0:2]) {
 	         for (h = [0:1]) {
-	            translate([85 * h,45*v,0]) {
-	               exterior_half_circle_y(40,5,14);
+	            translate([35 * h,17*v,0]) {
+	               exterior_half_circle_y(15,3,4);
 	            } 
 	         }
 	      }
 	   }
-      translate([0,200,0]) {
+/*
+      translate([42,35,0]) {
          make_leg();
       }
-      translate([0,250,0]) {
+      translate([42,52,0]) {
          make_leg();
       }
+      translate([42,68,0]) {
+         make_leg();
+      }
+*/
    }
 }
 
 module make_leg() {
-   exterior_half_circle_y(40,5,14);
+   exterior_half_circle_y(15,3,4);
    hull() {
-      translate([78,19.9,0]) {
-         cylinder(r=18, h=$eigth);
+      // top inset of foot
+      translate([24,12,0]) {
+         cylinder(r=1, h=$height);
       }
-      translate([44,39,0]) {
-         cylinder(r=1, h=$eigth);
+      //bottom inset of foot
+      translate([30,1,0]) {
+         cylinder(r=1, h=$height);
       }
-      translate([170, 35,0]) {
-         cylinder(r=5, h=$eigth);
+      //bottom foot
+      translate([50,15,0]) {
+         cylinder(r=2, h=$height);
       }
   }   
 }
@@ -59,7 +75,6 @@ module make_exterior_bounds(x, y) {
            cube([x-2*3, y-2*3, 3]);
        }
     }
-
 }
 
 module exterior_half_circle_y(radius, center, slot) {
@@ -67,17 +82,21 @@ module exterior_half_circle_y(radius, center, slot) {
        translate([0, 0, 0]) {
           half_circle_y(radius);
        }
-       translate([radius-(radius/3),center,-1]) {
-          cube([$slot_width,center+5,$eigth+2]);
+       // Left slot
+       translate([radius-(radius/3),center-1.1,-1]) {
+          cube([$slot_width,slot,$height+2]);
        }
-       translate([radius+(radius/3)-$slot_width,center,-1]) {
-          cube([$slot_width,center+5,$eigth+2]);
+       // right slot
+       translate([radius+(radius/3)-$slot_width,center-1.1,-1]) {
+          cube([$slot_width,slot,$height+2]);
        }
+       // center inset rect (gift space)
        translate([2*radius/3, -1, -1]) {
-          cube([2*radius/3,center+1.1,$eigth+2]);
+          cube([2*radius/3,center,$height+2]);
        }
+       // cut from bottom so that it's not a full half-circle
        translate([0,-1,-1]) {
-          cube([2*radius,2+1,$eigth+2]);
+          cube([2*radius,1,$height+2]);
        }
    }
 }
@@ -87,11 +106,11 @@ module make_full_circle_with_slots(radius, slots, slot_len) {
    $degrees = 360/slots;
    translate([radius, radius, 0]) {
       difference() {
-         cylinder(r=radius, h=$eigth);
+         cylinder(r=radius, h=$height);
          for (i = [0 : $slot_c - 1])  {
             rotate(a=(i * $degrees), v = [0,0,1]) {
                translate([radius - slot_len,-1.5,-1]) {
-                  cube([slot_len,3,$eigth+2]);
+                  cube([slot_len,$slot_width,$height+2]);
                }
            }
          }
@@ -102,9 +121,9 @@ module make_full_circle_with_slots(radius, slots, slot_len) {
 module half_circle_y(radius) {
    translate([radius,0,0]) {
       difference() {
-	      cylinder(r=radius, h=$eigth);
+	      cylinder(r=radius, h=$height);
 		   translate([-radius,-radius,-1]) {
-		      cube([2*radius,radius,$eigth+2]);
+		      cube([2*radius,radius,$height+2]);
 		   }
 	   }
    }

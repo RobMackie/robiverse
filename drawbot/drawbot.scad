@@ -15,6 +15,8 @@ $eigth = $inch/8;
 $sixteenth = $inch/16;
 $thirtysecondth = $inch/32;
 
+
+
 $height=10;
 $main_radius=50;
 $pen_radius = 10.5/2;
@@ -39,6 +41,9 @@ module make_parts() {
 	            cylinder(r=$pen_radius, $height+2);
 	         }
 	         translate([-$offset+4,-20,-1]) {
+	            cylinder(r=$pen_radius, $height+2);
+	         }
+	         translate([-$offset+4,-10,-1]) {
 	            cylinder(r=$pen_radius, $height+2);
 	         }
 	      }
