@@ -5,7 +5,8 @@ $eigth = $inch/8;
 $sixteenth = $inch/16;
 $thirtysecondth = $inch/32;
 
-$slot_width = 2.5; // was 2.2 (too small)
+// $slot_width = 2.5; //translucent filament from printrbot
+$slot_width = 2.6;  // red filament
 $height = 2;
 
 
@@ -15,27 +16,40 @@ module make_parts() {
    // make_exterior_bounds(152.4,152.4);
 
    translate([0,2,0]) {
-	   translate([5,2.5,0]){
+	   translate([1,2.5,0]){
 	      make_full_circle_with_slots(11, 6, 4);
 	   }
-	   translate([41,2.5,0]){
+/*  bring back
+	   translate([27,2.5,0]){
 	      make_full_circle_with_slots(11, 6, 4);
 	   } 
+*/
 
       /*
 	   translate([45,15,0]) {
 	      exterior_half_circle_y(15,3,4);
 	   } 
       */
-	   translate([5,35,0]) {
+	   translate([1,26,0]) {
+	      for (v = [0:0]) { // was 2
+//	         for (h = [0:1]) {
+	            translate([1,17*v,0]) {
+	               exterior_half_circle_y(15,3,4);
+	            } 
+//	         }
+	      }
+	   }
+/*  bring back 
+	   translate([30,35,0]) {
 	      for (v = [0:2]) {
-	         for (h = [0:1]) {
-	            translate([35 * h,17*v,0]) {
+//	         for (h = [0:1]) {
+	            translate([1,17*v,0]) {
 	               exterior_half_circle_y(15,3,4);
 	            } 
 	         }
-	      }
+//	      }
 	   }
+*/
 /*
       translate([42,35,0]) {
          make_leg();
