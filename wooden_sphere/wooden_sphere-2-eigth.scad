@@ -1,5 +1,3 @@
-use <../libs/bearing_mount_lib.scad>
-
 $inch = 25.4;
 $half = $inch/2;
 $quarter = $inch/4;
@@ -12,15 +10,15 @@ $2d = 0;              // set to one for final rendering as
                       // .dxf format file
 
 $slot_width = 3.56;      // thickness of material
-$rotating_slots = 2;  // is this used?
 $center_hole = 0;     // true puts a hole in disk
 
 $fn=128;
 
 module make_parts() {
-  workspace_bounds(265,300);
-// translation for final fit to workspace
-translate([2, -1, 0]) {
+  workspace_bounds(265,300); // comment out before cutting
+
+   // translation for final fit to workspace
+   translate([2, -1, 0]) {
    // make a set of inner pieces
    translate([10,2.5,0]){
       make_full_circle_with_slots(50, 16, 10);
@@ -108,6 +106,19 @@ module half_circle_y(radius) {
 		      cube([2*radius,radius,$eigth+2]);
 		   }
 	   }
+   }
+}
+
+module workspace_bounds(x, y) {
+   translate([-5, -5, 0]) {
+      difference() {
+         translate([0,0,0]) {
+             cube([x+10,y+10,$eigth]);
+         }
+         translate([5,5,-1]) {
+             cube([x,y,$eigth+2]);
+         }
+      }
    }
 }
 
