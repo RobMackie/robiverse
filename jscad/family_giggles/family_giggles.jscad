@@ -6,6 +6,8 @@
 // tags: Logo,Intersection,Sphere,Cube
 
 function main() {
+    var face1 = new CAG.fromPoints([[0,0], [10.1,0], [5.0,4.9] ]);
+    var shape = face1.extrude({offset: [0,0,20]}).rotateX(90);
     return difference(
                union( 
                     //shoulder
@@ -15,10 +17,11 @@ function main() {
                     cube([6,20,7]).rotateY(45).translate([0,0,1.414*7/2]), 
 
                     // body slab
-                    cube([30,20,1]).translate([4,0.0])N
+                    cube([50,20,1]).translate([4,0.0]),
+                    shape.translate([4,20,1])
                ),
                //magnet hollow
-               cube([4.97,22,5.71]).rotateY(45).translate([0.5,-1,1.414*7/2]) 
+               cube([4.97,22,5.71]).rotateY(45).translate([0.25,-0.75,1.414*7/2]) 
            );
 }    
 
