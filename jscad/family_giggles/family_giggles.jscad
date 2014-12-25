@@ -16,7 +16,7 @@ function main() {
             cube([6,20,7]).rotateY(45).translate([0,0,1.414*7/2]), 
 
             // body slab
-            cube([40,20,1]).translate([4.3,0.0]),
+            cube([38,20,1]).translate([4.3,0.0]),
             shape.translate([4,20,1])
         ),
         //magnet hollow
