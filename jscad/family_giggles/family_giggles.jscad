@@ -20,8 +20,8 @@ function main() {
         cube([4.97,22,5.71]).rotateY(45).translate([2,0,1.414*7/2]),
         extruded_stringX("Dad",4,4,0.5).translate([12,5,0])
     ),
-    cube([30,0.2,0.2]).translate([12,10,0]),
-    cube([30,0.2,0.2]).translate([12,8,0])
+    cube([30,0.8,0.4]).translate([12,8,0]),
+    cube([11,0.8,0.4]).translate([12,12,0])
     );
 }
 
