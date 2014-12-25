@@ -4,20 +4,17 @@
 // revision: 0.005
 
 function main() {
-    var face1 = new CAG.fromPoints([[0,0], [7.1,0], [5.0,4.9] ]);
+    var face1 = new CAG.fromPoints([[0,0], [7.1,0], [5.3,5.15] ]);
     var shape = face1.extrude({offset: [0,0,20]}).rotateX(90);
     return union (
     difference(
         union( 
-            //shoulder
-            /* cube([2,20,5*1.414]).translate([2.5*1.414,0,0]), */
-
             // diamond
-            cube([6,20,7]).rotateY(45).translate([0,0,1.414*7/2]), 
+            cube([7,20,7]).rotateY(45).translate([0,0,1.414*7/2-0.1]), 
 
             // body slab
-            cube([38,20,1]).translate([4.3,0.0]),
-            shape.translate([4,20,1])
+            cube([38,20,0.4]).translate([4.3,0.0]),
+            shape.translate([4.4,20,0.4])
         ),
         //magnet hollow
         cube([4.97,22,5.71]).rotateY(45).translate([2,0,1.414*7/2]),
