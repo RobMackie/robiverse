@@ -35,7 +35,7 @@ module make_parts() {
 						translate([0,-3,0]) {
 		               union() {
 		                  cube([30,20,5]);
-		                  cube([30,4,30]);
+		                  cube([30,4,25]);
 		               }
 		            }
 		         }
@@ -47,7 +47,7 @@ module make_parts() {
 						translate([0,22,0]) {
 		               union() {
 		                  cube([30,20,5]);
-		                  cube([30,4,30]);
+		                  cube([30,4,25]);
 		               }
 		            }
 		         }
@@ -59,7 +59,7 @@ module make_parts() {
 						translate([0,-30,0]) {
 		               union() {
 		                  cube([30,20,5]);
-		                  cube([30,4,30]);
+		                  cube([30,4,25]);
 		               }
 		            }
 		         }
