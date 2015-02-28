@@ -1,5 +1,3 @@
-// openscad = http://www.openscad.org/downloads.html
-
 $2d = 0;  // Openscad directions:
           // set this to "$2d = 1;" to get a profile for a dxf
           // then go to menu option "Design" and choose
@@ -20,142 +18,76 @@ $main_radius=50;
 
 $fn=128;
 
+module make_servo_pattern(hole_radius, hole_w, hole_l) {
+   $body_h = hole_w + 6;
+   $body_l = hole_l - 8;
+   union() {
+      translate([0,7,0]) {
+         rotate([90,0,0]) {
+            translate([0,0,0]) {
+               cylinder(r=hole_radius, h=8);
+            }
+            translate([0,hole_w,0]) {
+               cylinder(r=hole_radius, h=8);
+            }
+            translate([hole_l,0,0]) {
+               cylinder(r=hole_radius, h=8);
+            }
+            translate([hole_l,hole_w,0]) {
+               cylinder(r=hole_radius, h=9);
+            }
+         }
+      }
+      translate([4,-1,-2]) {
+         cube([$body_l,7, $body_h]);
+      }
+   }
+}
+
+module make_one_arm(length, width, height) {
+   translate([0,5,0]) {
+	   difference() {
+	      cube([length, width, height]);
+	      translate([-1,5,5]) {
+	         cube([length + 2, width - 4, height - 4]);
+	      }
+         translate([145,0,7]) {
+            make_servo_pattern(1.5,20,50);
+         }
+	   }
+   }    
+}
+
 module make_parts() {
    difference() {
-	   union () {
-			translate([0,0,0]) {
-		      union() {
-			      cylinder(r=$main_radius, h=$height);
-		//	      cylinder(r=78, h=1);
-		      }
+	   union() {
+		   rotate([0,0,0]) {
+		      make_one_arm(200, 20, 30);
 		   }
-			translate([45,0,0]) {
-		      rotate([0,0,0]) {
-			      union([0,0,0]) {
-						translate([0,-3,0]) {
-		               union() {
-		                  cube([30,20,5]);
-		                  cube([30,4,25]);
-		               }
-		            }
-		         }
-		      }
+		   rotate([0,0,120]) {
+		      make_one_arm(200, 20, 30);
 		   }
-		   translate([0,52,0]) {
-		      rotate([0,0,120]) {
-			      union([0,0,0]) {
-						translate([0,22,0]) {
-		               union() {
-		                  cube([30,20,5]);
-		                  cube([30,4,25]);
-		               }
-		            }
-		         }
-		      }
+		   rotate([0,0,240]) {
+		      make_one_arm(200, 20, 30);
 		   }
-		   translate([0,-52,0]) {
-		      rotate([0,0,-120]) {
-			      union([0,0,0]) {
-						translate([0,-30,0]) {
-		               union() {
-		                  cube([30,20,5]);
-		                  cube([30,4,25]);
-		               }
-		            }
-		         }
-		      }
-		   }
+         cylinder(r=100, h=5);
 	   }
-      // holes for 3 mounting posts in openbeam
+      translate([0,0,5]) {
+         cylinder(r=20, h=30);
+      }
       rotate([0,0,60]) {
-	      translate([42,0,-1]) {
-           cylinder(r=1.5, h=10);
-	      }
+         translate([90,0,-1]) {
+            cylinder(r=1.5, h=6);
+         }
       }
       rotate([0,0,180]) {
-	      translate([42,0,-1]) {
-	         cylinder(r=1.5, h=10);
-	      }
-      }
-      rotate([0,0,300]) {
-	      translate([42,0,-1]) {
-	         cylinder(r=1.5, h=10);
-	      }
-      }
-      // holes for mounting servos x
-      rotate([0,0,0]) {
-	      translate([50,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([50,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-      }
-      rotate([0,0,0]) {
-	      translate([68,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([68,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-      }
-      // holes for mounting servos y
-      rotate([0,0,119]) {
-	      translate([50,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([50,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-      }
-      rotate([0,0,119]) {
-	      translate([68,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([68,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-      }
-      // holes for mounting servos z
-      rotate([0,0,239]) {
-	      translate([50,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([50,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-      }
-      rotate([0,0,239]) {
-	      translate([68,6,10]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
-	      translate([68,6,20]) {
-            rotate([90,0,0]) {
-	            cylinder(r=3, h=10);
-            }
-	      }
+         translate([90,0,-1]) {
+            cylinder(r=1.5, h=6);
+         }
+      }      rotate([0,0,300]) {
+         translate([90,0,-1]) {
+            cylinder(r=1.5, h=6);
+         }
       }
    }
 }
