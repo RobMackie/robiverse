@@ -49,7 +49,7 @@ module make_one_arm(length, width, height) {
 	   difference() {
 	      cube([length, width, height]);
 	      translate([-1,5,5]) {
-	         cube([length + 2, width - 4, height - 4]);
+	         cube([length + 2, width - 4, height  - 4]);
 	      }
          translate([145,0,7]) {
             make_servo_pattern(1.5,20,50);
@@ -62,18 +62,18 @@ module make_parts() {
    difference() {
 	   union() {
 		   rotate([0,0,0]) {
-		      make_one_arm(200, 20, 30);
+		      make_one_arm(200, 20, 40);
 		   }
 		   rotate([0,0,120]) {
-		      make_one_arm(200, 20, 30);
+		      make_one_arm(200, 20, 40);
 		   }
 		   rotate([0,0,240]) {
-		      make_one_arm(200, 20, 30);
+		      make_one_arm(200, 20, 40);
 		   }
-         cylinder(r=100, h=5);
+         cylinder(r=150, h=5);
 	   }
       translate([0,0,5]) {
-         cylinder(r=20, h=30);
+         cylinder(r=20, h=420);
       }
       rotate([0,0,60]) {
          translate([90,0,-1]) {
