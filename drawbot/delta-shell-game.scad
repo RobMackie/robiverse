@@ -18,12 +18,20 @@ $main_radius=50;
 
 $fn=128;
 
-$arm_len = 250;
-$hole_h = 25;
-$hole_w = 30;
+$arm_len = 75;
+$arm_h = 30;
+$arm_w = 22.25;
 
-$top_disk = 150;
+$top_disk_r = 40;
+$top_disk_h = 5;
 
+// servo mount parameters
+// $vertical_hole_distance = 
+// $horizontal_hole_distance =
+// $body_horizontal =
+// $body_vertical =
+// $plate_horizontal =
+// $plate_vertical =
 
 module make_servo_pattern(hole_radius, hole_w, hole_l) {
    $body_h = hole_w + 6;
@@ -53,7 +61,7 @@ module make_servo_pattern(hole_radius, hole_w, hole_l) {
 	}
 }
 
-module make_one_arm(length, width, height) {
+module make_one_arm(length, height, width) {
    translate([0,11.68+(3.05*2),0]) {
 	   difference() {
 	      cube([length, width, height]);
@@ -63,52 +71,77 @@ module make_one_arm(length, width, height) {
          translate([length-55,0,7]) {
             make_servo_pattern(2,10.17,47.26);
          }
+         translate([length-8,12.5,-1]) {
+            cylinder(r=1.5, h=7);
+         }
 	   }
    }    
 }
 
-module make_parts(len, h, w) {
+module make_parts() {
    difference() {
 	   union() {
-		   rotate([0,0,0]) {
-		      make_one_arm($arm_len, $hole_h, $hole_w);
+		   rotate([0,0,0]) { // x arm
+		      make_one_arm($arm_len, $arm_h, $arm_w);
 		   }
 		   rotate([0,0,120]) {
-		      make_one_arm($arm_len, $hole_h, $hole_w);
+		      make_one_arm($arm_len, $arm_h, $arm_w);
 		   }
 		   rotate([0,0,240]) {
-		      make_one_arm($arm_len, $hole_h, $hole_w);
+		      make_one_arm($arm_len, $arm_h, $arm_w);
 		   }
-         cylinder(r=$top_disk, h=5);
+         cylinder(r=$top_disk_r, h=$top_disk_h);
 	   }
-      translate([0,0,5]) {
-         cylinder(r1=20, r2=200, h=$hole_h*1.2);
+      translate([0,0,14]) {
+         cylinder(r1=5, r2=$top_disk_r, h=$arm_h - $top_disk_h );
       }
+/*  no longer need post mout holes, because they are in the 
+    arms now.
+
       rotate([0,0,60]) {
-         translate([$top_disk-15,0,-1]) {
+         translate([$top_disk_r-8,0,-1]) {
             cylinder(r=1.5, h=7);
          }
       }
       rotate([0,0,180]) {
-         translate([$top_disk-15,0,-1]) {
+         translate([$top_disk_r-8,0,-1]) {
             cylinder(r=1.5, h=7);
          }
       }      rotate([0,0,300]) {
-         translate([$top_disk-15,0,-1]) {
+         translate([$top_disk_r-8,0,-1]) {
             cylinder(r=1.5, h=7);
          }
       }
+*/
    }
 }
 
+$bounding_box = 0; // show bounding box
 if ($2d) {
     projection(cut=true) {
        translate([0,0,0]) rotate([0,0,0]) {
-         make_parts(200, 20, 40);
+         make_parts();
        }
     }
 } else {
-    make_parts();
+   translate([-7,-12,0]) {
+  	   make_parts();
+   }
+	if ($bounding_box) {
+	   rotate([0,0,35]) {
+		   translate([0,0,-1]) {
+		      difference() {
+			      translate([-77, -77, 0]) {
+			         cube([154,154,1]);
+			      }
+			      translate([-76,-76,-1]) {
+			         cube([152,152,3]);
+			      }	
+			   }
+			}
+	   }
+	}
+
 //  for measuring and calibrating
 //    translate([60,40,0]) {
 //      cube([20,5,1]);
