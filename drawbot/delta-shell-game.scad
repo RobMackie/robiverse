@@ -4,7 +4,7 @@ $2d = 0;  // Openscad directions:
           // "Compile and Render" then when you get the flat
           // drawing, go to "Design" and choose export as dxf
           // or set "$2d = 0"; and "Export as STL"
-// http://www.robotshop.com/forum/c-bracket-width-too-narrow-t8344
+
 // Conveniences:
 $inch = 25.4;
 $half = $inch/2;
@@ -22,6 +22,7 @@ $arm_len = 250;
 $hole_h = 25;
 $hole_w = 30;
 
+$top_disk = 150;
 
 
 module make_servo_pattern(hole_radius, hole_w, hole_l) {
@@ -78,23 +79,23 @@ module make_parts(len, h, w) {
 		   rotate([0,0,240]) {
 		      make_one_arm($arm_len, $hole_h, $hole_w);
 		   }
-         cylinder(r=150, h=5);
+         cylinder(r=$top_disk, h=5);
 	   }
       translate([0,0,5]) {
          cylinder(r1=20, r2=200, h=$hole_h*1.2);
       }
       rotate([0,0,60]) {
-         translate([90,0,-1]) {
-            cylinder(r=1.5, h=6);
+         translate([$top_disk-15,0,-1]) {
+            cylinder(r=1.5, h=7);
          }
       }
       rotate([0,0,180]) {
-         translate([90,0,-1]) {
-            cylinder(r=1.5, h=6);
+         translate([$top_disk-15,0,-1]) {
+            cylinder(r=1.5, h=7);
          }
       }      rotate([0,0,300]) {
-         translate([90,0,-1]) {
-            cylinder(r=1.5, h=6);
+         translate([$top_disk-15,0,-1]) {
+            cylinder(r=1.5, h=7);
          }
       }
    }
