@@ -16,23 +16,35 @@ $wall = 4;
 $inset = 2;
 $tab_x=10;
 $tab_y=10;
+$screw_d=3;
+$screw_r=1;
 
 module make_hollow_box() {
       
     difference() {
+        // raw box block
         cube([$box_x, $box_y, $box_z]);
+        // inner hollow
         translate([$wall, $wall, $wall]) {
             cube([$box_x-(2*$wall), $box_y-(2*$wall), $box_z]);
         }
         translate([$wall-$inset, $wall-$inset, $box_z -($wall/2)]) {
             cube([$box_x-(2*($wall-$inset)), $box_y-(2*($wall-$inset)), $wall]);
         }
+        // tabs
         translate([$box_x/2 - $tab_x/2, -0.2, $box_z-$wall/2]) {
             cube([$tab_x,$box_y+0.4,$wall/2+0.1]);
         } 
         translate([-0.1, $box_y/2-$tab_y/2,$box_z-$wall/2]) {
             cube([$box_x+0.2,$tab_y + 0.2,$wall]);
         }
+        //tab screw holes
+        translate([$wall/2,$box_y/2,$box_z - ($wall/2+$screw_d-0.1)]) {
+            cylinder(r=$screw_r, h=$screw_d + 0.1);
+        }
+        translate([$box_x-($wall/2),$box_y/2,$box_z - ($wall/2+$screw_d-0.1)]) {
+            cylinder(r=$screw_r, h=$screw_d + 0.1);
+        }   
     }
 }
 
@@ -74,19 +86,28 @@ module make_standoffs() {
 }
 
 module make_lid() {
-    union() {
-        cube([$box_x, $box_y, $wall/2]);
-        translate([$wall-$inset,$wall-$inset,$wall/2]) {
-	        cube([$box_x-(2*$inset), 
-	              $box_y-(2*$inset),
-	              $wall/2]);
-        }
-        translate([$box_x/2-$tab_x/2,0,$wall/2]) {
-            cube([$tab_x,$box_y,$wall/2]);
-        }
-        translate([0, $box_y/2-$tab_y/2,$wall/2]) {
-            cube([$box_x, $tab_y, $wall/2]);
-        }
+    difference() {
+	    union() {
+	        cube([$box_x, $box_y, $wall/2]);
+	        translate([$wall-$inset,$wall-$inset,$wall/2]) {
+		        cube([$box_x-(2*$inset), 
+		              $box_y-(2*$inset),
+		              $wall/2]);
+	        }
+	        translate([$box_x/2-$tab_x/2,0,$wall/2]) {
+	            cube([$tab_x,$box_y,$wall/2]);
+	        }
+	        translate([0, $box_y/2-$tab_y/2,$wall/2]) {
+	            cube([$box_x, $tab_y, $wall/2]);
+	        }
+	    }
+       //tab screw holes
+       translate([$wall/2,$box_y/2,0]) {
+           cylinder(r=$screw_r + 0.25, h=2*$screw_d + 0.1);
+       }
+       translate([$box_x-($wall/2),$box_y/2,0]) {
+           cylinder(r=$screw_r + 0.25, h=2*$screw_d + 0.1);
+       }
     }
 }
 
