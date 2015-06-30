@@ -9,8 +9,8 @@ $fn=128;
 
 $cut_away = 0;
 
-$box_x = 75;
-$box_y = 60;
+$box_x = 100;
+$box_y = 100;
 $box_z = 15;
 $wall = 4;
 $inset = 2;
@@ -61,25 +61,26 @@ module make_standoff() {
     }
 }
 
-$so_inset=10;
+$so_inset_x=10;
+$so_inset_y=25;
 module make_standoffs() {
-    translate([$wall+$so_inset, 
-               $wall+$so_inset, 
+    translate([$wall+$so_inset_x, 
+               $wall+$so_inset_y, 
                $wall-1]) {
         make_standoff();
     }
-    translate([$box_x-($wall+$so_inset), 
-               $wall+$so_inset, 
+    translate([$box_x-($wall+$so_inset_x), 
+               $wall+$so_inset_y, 
                $wall-1]) {
         make_standoff();
     }
-    translate([$wall+$so_inset, 
-               $box_y-($wall+$so_inset), 
+    translate([$wall+$so_inset_x, 
+               $box_y-($wall+$so_inset_y), 
                $wall-1]) {
         make_standoff();
     }
-    translate([$box_x-($wall+$so_inset), 
-               $box_y-($wall+$so_inset), 
+    translate([$box_x-($wall+$so_inset_x), 
+               $box_y-($wall+$so_inset_y), 
                $wall-1]) {
         make_standoff();
     }
