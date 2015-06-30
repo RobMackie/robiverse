@@ -15,8 +15,10 @@ $box_z = 15;
 $wall = 4;
 $inset = 2;
 $tab_x=10;
+$tab_y=10;
 
 module make_hollow_box() {
+      
     difference() {
         cube([$box_x, $box_y, $box_z]);
         translate([$wall, $wall, $wall]) {
@@ -25,10 +27,12 @@ module make_hollow_box() {
         translate([$wall-$inset, $wall-$inset, $box_z -($wall/2)]) {
             cube([$box_x-(2*($wall-$inset)), $box_y-(2*($wall-$inset)), $wall]);
         }
-        translate([$box_x/2 - $tab_x/2, -0.1, $box_z-$wall/2]) {
-            cube([$tab_x,$box_y+0.2,$wall/2+0.1]);
+        translate([$box_x/2 - $tab_x/2, -0.2, $box_z-$wall/2]) {
+            cube([$tab_x,$box_y+0.4,$wall/2+0.1]);
+        } 
+        translate([-0.1, $box_y/2-$tab_y/2,$box_z-$wall/2]) {
+            cube([$box_x+0.2,$tab_y + 0.2,$wall]);
         }
-      
     }
 }
 
@@ -79,6 +83,9 @@ module make_lid() {
         }
         translate([$box_x/2-$tab_x/2,0,$wall/2]) {
             cube([$tab_x,$box_y,$wall/2]);
+        }
+        translate([0, $box_y/2-$tab_y/2,$wall/2]) {
+            cube([$box_x, $tab_y, $wall/2]);
         }
     }
 }
