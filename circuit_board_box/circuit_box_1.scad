@@ -16,7 +16,7 @@ $make_box=1;
 // Wall thickness for box (walls, top, bottom)
 $wall = 4;
 // clearance from center of standoff to inside of wall
-$so_inset_x=25;
+$so_inset_x=18.3;
 $so_inset_y=30;
 
 // distance between centers on the standoffs (so)
@@ -161,8 +161,8 @@ if ($2d) {
 		make_lid();
    }
 //  for measuring and calibrating
-//    translate([60,40,0]) {
-//      cube([20,5,1]);
-//    }
+//      translate([0,0,40]) {
+//        cube([140,121.5,8]);
+//      }
 }
 
