@@ -36,6 +36,11 @@ $tab_y=10;
 $screw_d=3;
 $screw_r=1;
 
+$standoff_h=6;
+$standoff_r=4;
+$bolt_r=1.5;
+$bolt_h=3;
+
 module make_hollow_box() {
       
     difference() {
@@ -65,10 +70,6 @@ module make_hollow_box() {
     }
 }
 
-$standoff_h=6;
-$standoff_r=4;
-$bolt_r=1.5;
-$bolt_h=3;
 module make_standoff() {
     difference() {
         cylinder(r=$standoff_r, h=$standoff_h);
