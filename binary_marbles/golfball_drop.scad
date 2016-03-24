@@ -89,6 +89,9 @@ if ($2d) {
    }
    translate([($clamp_len+2*$paddle_rad),$paddle_rad * 2.3,0]) rotate([0,0,180]) {
       build_it();
-   }   
+   }  
+   translate([50,$paddle_rad * 1.6*2.3,0]) rotate([0,0,0]) {
+      build_it();
+   }  
 }
 

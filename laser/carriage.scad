@@ -7,6 +7,7 @@ $thirtysecondth = $inch/32;
 
 $diameter=4.5;
 $radius=4.1/2;
+$mradius=3.05/2;
 
 // $x_delta = 35.7 // too big
 // $x_delta=34; // a bit tight
@@ -16,7 +17,7 @@ $y_delta=64;
 
 $fn=32;
 
-module holes() {
+module wheel_holes() {
    translate([0,0,-1]) {
        cylinder(r=$radius, h=10);
    }
@@ -31,13 +32,33 @@ module holes() {
    }
 }
 
+$mount_holes_delta = 38;
+module mount_holes() {
+   translate([0,0,-1]) {
+       cylinder(r=$mradius, h=10);
+   }
+   translate([0,$mount_holes_delta,-1]) {
+       cylinder(r=$mradius, h=10);
+   }
+   translate([$x_delta,0,-1]) {
+       cylinder(r=$mradius, h=10);
+   }
+   translate([$x_delta,$mount_holes_delta,-1]) {
+       cylinder(r=$mradius, h=10);
+   }
+}
 
 module base_plate () {
-
    difference() {
         cube([60, 80, $eigth]);
         translate([(60-$x_delta)/2, (80-$y_delta)/2,-1]) {
-           holes();
+           wheel_holes();
+        }
+        translate([(60-$x_delta)/2,(80-$mount_holes_delta)/2,-1]) {
+           mount_holes();
+        }
+        translate([60/2,80/2,-1]) {
+            cylinder(r=7.5, h=10);
         }
    }
 }
