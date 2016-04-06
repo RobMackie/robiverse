@@ -21,13 +21,13 @@ module handle() {
             cube([$clamp_len*1.1, $clamp_wide,$height]);
         }
         translate([15,0,-1]) {
-            cylinder(r=$inch/8, h=$height+2);
+            cylinder(r=$inch/7.9, h=$height+2);
         }
         translate([15+$inch,0,-1]) {
-            cylinder(r=$inch/8, h=$height+2);
+            cylinder(r=$inch/7.9, h=$height+2);
         }   
         translate([15+2*$inch,0,-1]) {
-            cylinder(r=$inch/8, h=$height+2);
+            cylinder(r=$inch/7.9, h=$height+2);
         }       
     }
 }
