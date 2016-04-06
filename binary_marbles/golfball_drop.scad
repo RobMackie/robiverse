@@ -6,12 +6,14 @@ $paddle_rad=(2.5*$inch);
 $paddle_hollow_rad=($paddle_rad - (0.5*$inch));
 $div_long=($paddle_rad-(0.5*$inch));
 $div_wide=($paddle_rad/5);
-$plat_rad=($inch*2/4);
+$plat_rad=(8);
 $height=1;
-$t_hole=($inch * 1/16);
+$t_hole=($inch * 3/16);
 
 $clamp_wide=$inch*1;
-$clamp_len=$inch*2;
+$clamp_len=$inch*3;
+
+$fn=32;
 
 module handle() {
     difference() {
@@ -21,9 +23,12 @@ module handle() {
         translate([15,0,-1]) {
             cylinder(r=$inch/8, h=$height+2);
         }
-        translate([45,0,-1]) {
+        translate([15+$inch,0,-1]) {
             cylinder(r=$inch/8, h=$height+2);
-        }        
+        }   
+        translate([15+2*$inch,0,-1]) {
+            cylinder(r=$inch/8, h=$height+2);
+        }       
     }
 }
 
@@ -41,14 +46,14 @@ module hollow_paddle() {
 module diving_board() {
     difference() {
         union() {
-            translate([0,-(0.5*$div_wide),0]) {
-                cube([$paddle_rad-$t_hole, $div_wide, $height]);
+            translate([0,-($plat_rad),0]) {
+                cube([($paddle_rad-$t_hole)/3, $plat_rad*2, $height]);
             }
-            translate([$paddle_rad, 0, 0]) {
+            translate([$paddle_rad/3, 0, 0]) {
                 cylinder(r=$plat_rad, h=$height);
             }
         }
-        translate([$paddle_rad,0,-1]) {
+        translate([$paddle_rad/3,0,-1]) {
             cylinder(r=$t_hole, h=$height+2);
         }
     }
@@ -82,16 +87,21 @@ if ($2d) {
        translate([($clamp_len+2*$paddle_rad),$paddle_rad * 2.3,0]) rotate([0,0,180]) {
           build_it();
        }
+/*
+	   translate([50,$paddle_rad * 1.6*2.3,0]) rotate([0,0,0]) {
+	      build_it();
+	   } 
+*/
     }
 } else {
-   translate([50,$paddle_rad,0]) rotate([0,0,0]) {
+   translate([55,$paddle_rad+5,0]) rotate([0,0,0]) {
       build_it();
    }
-   translate([($clamp_len+2*$paddle_rad),$paddle_rad * 2.3,0]) rotate([0,0,180]) {
+   translate([($clamp_len+2*$paddle_rad)+5,$paddle_rad * 2.3+5,0]) rotate([0,0,180]) {
       build_it();
-   }  
+   }  /*
    translate([50,$paddle_rad * 1.6*2.3,0]) rotate([0,0,0]) {
       build_it();
-   }  
+   } */ 
 }
 
