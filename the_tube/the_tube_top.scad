@@ -15,6 +15,7 @@ $rail_depth = 16;
 $rail_wall = 5;
 $slot_clearance = 2;
 
+$fn=256;
 
 module build_shell() {
 	difference () {
