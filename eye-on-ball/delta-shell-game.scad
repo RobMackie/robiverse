@@ -1,5 +1,5 @@
 
-// Conveniences:
+// Conveniences: (since a raw number is always mm)
 $inch = 25.4;
 $half = $inch/2;
 $quarter = $inch/4;
@@ -7,25 +7,26 @@ $eigth = $inch/8;
 $sixteenth = $inch/16;
 $thirtysecondth = $inch/32;
 
-$height=5;
-$main_radius=50;
-
-$fn=128;
-
-$arm_len = 110;
-$arm_h = 30;
-$arm_w = 22.25;
-
-$top_disk_r = 40;
-$top_disk_h = 5;
+$fn=128; // controls how round circles are, bigger num is rounder
 
 // servo mount parameters
-// $vertical_hole_distance = 
-// $horizontal_hole_distance =
-// $body_horizontal =
-// $body_vertical =
-// $plate_horizontal =
-// $plate_vertical =
+$base_pad = 5; // thinkness of baseplate of mount, must be 5 or  
+               // greater due to the subtraction constant below
+               // To make the base plate thicker, change $base_pad 
+               // to 8 or 10 or something, this parameter should
+               // generally self-adjust other things in the file
+$base_pad_offset = $base_pad - 5;
+
+// Not sure that any of the below really are coded so that a 
+// change properly adjusts all the related values.
+$arm_len = 110; // length of mount in the X dimension
+$arm_h = 30;    // height of mount
+$arm_w = 22.25; // front to back of mount (match to 8020 dim?)
+
+// This is how you adjust the servo holes distance, one from another
+$vertical_hole_distance = 10.17;
+$horizontal_hole_distance = 47.26;
+
 
 module make_servo_pattern(hole_radius, hole_w, hole_l) {
    $body_h = hole_w + 6;
@@ -61,60 +62,85 @@ module make_one_arm(length, height, width) {
       union() {
 	      difference() {
 
-	         cube([length, width, height-5]);
-	         translate([-1,5,5]) {
-	            cube([length + 2, width - 4, height  - 4]);
-	         }
-            translate([length-55,0,7]) {
-               make_servo_pattern(2,10.17,47.26);
+	        cube([length, width, height-5 + $base_pad_offset]);
+	        translate([-1,5,$base_pad]) {
+	           cube([length + 2, width - 4, height-1]);
+	        }
+            // center the servo cut out along the length
+            translate([length/2-($horizontal_hole_distance/2),0,7+$base_pad_offset]) {
+               make_servo_pattern(2,
+                                  $vertical_hole_distance,
+                                  $horizontal_hole_distance);
             }
-// bolt hole for openbeam
-            translate([length-8,12.5,-1]) {
-               cylinder(r=$eigth, h=7);
+// bolt hole for 8020
+            translate([length-12,12.5,-1]) {
+               cylinder(r=$eigth, h=7+$base_pad_offset);
             }
 // bolt hole for mounting to plate
+            /*
             translate([length-70,12.5,-1]) {
-               cylinder(r=$eigth, h=7);
+               cylinder(r=$eigth, h=7 + $base_pad_offset);
             }
+            */
 // bolt hole for mounting to plate
-            translate([length-100,12.5,-1]) {
-               cylinder(r=$eigth, h=7);
+            translate([length-96,12.5,-1]) {
+               cylinder(r=$eigth, h=7+$base_pad_offset);
             }
 	      }
-// outer triangle
-         translate([length-5,2,2]) {
+// triangle next to servo cut out
+         translate([length/2-($horizontal_hole_distance/2)-6,2,2+$base_pad_offset]) {
             hull() {
-               translate([2,2,2]) {
+               translate([0,2,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,width-4,2]) {
+               translate([0,width-4,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,2,height-10]) {
+               translate([0,2,height-10]) {
+                  rotate([0,90,0]) {
+                     cylinder(r=2, h=$triangle);
+                  }
+               }
+            }
+         }          
+// triangle next to servo cut out
+            translate([length/2+($horizontal_hole_distance/2)+3,2,2+$base_pad_offset]){
+            hull() {
+               translate([0,2,2]) {
+                  rotate([0,90,0]) {
+                     cylinder(r=2, h=$triangle);
+                  }
+               }
+               translate([0,width-4,2]) {
+                  rotate([0,90,0]) {
+                     cylinder(r=2, h=$triangle);
+                  }
+               }
+               translate([0,2,height-10]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
             }
          }
-         // inner triangle
-         translate([length-65,2,2]) {
+// outer triangle
+         translate([length-3,2,2+$base_pad_offset]) {
             hull() {
-               translate([2,2,2]) {
+               translate([0,2,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,width-4,2]) {
+               translate([0,width-4,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,2,height-10]) {
+               translate([0,2,height-10]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
@@ -122,20 +148,20 @@ module make_one_arm(length, height, width) {
             }
          }
       
-         // innermost triangle
-         translate([length-112,2,2]) {
+// inner triangle
+         translate([0,2,2+$base_pad_offset]) {
             hull() {
-               translate([2,2,2]) {
+               translate([0,2,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,width-4,2]) {
+               translate([0,width-4,2]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
                }
-               translate([2,2,height-10]) {
+               translate([0,2,height-10]) {
                   rotate([0,90,0]) {
                      cylinder(r=2, h=$triangle);
                   }
