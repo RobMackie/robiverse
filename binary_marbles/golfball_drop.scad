@@ -8,7 +8,7 @@ $div_long=($paddle_rad-(0.5*$inch));
 $div_wide=($paddle_rad/5);
 $plat_rad=(8);
 $height=1;
-$t_hole=($inch * 3/16);
+$t_hole=($inch/2 * 3/16);
 
 $clamp_wide=$inch*1;
 $clamp_len=$inch*3;
