@@ -1,5 +1,7 @@
 
 $height=3;
+$rad=1;
+$dist=15;
 
 $fn=16;
 module shell (h, r, d) {
@@ -18,9 +20,9 @@ module shell (h, r, d) {
 
 translate([1,1,0]) {
     difference() {
-        shell($height, 1, 5.5);
+        shell($height, $rad, $dist);
         translate([0.5,0.5,-1]) {
-           shell($height+2, 0.9, 4);
+           shell($height+2, 0.9*$rad, 0.85*$dist);
         }
    }
 }
