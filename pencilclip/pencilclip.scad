@@ -1,7 +1,10 @@
 
-$height=3;
+$height=6;
 $rad=1;
 $dist=15;
+$inrad=3;
+$indist = 5;
+$frac = 0.2;
 
 $fn=16;
 module shell (h, r, d) {
@@ -18,11 +21,22 @@ module shell (h, r, d) {
 	}
 }
 
-translate([1,1,0]) {
-    difference() {
-        shell($height, $rad, $dist);
-        translate([0.5,0.5,-1]) {
-           shell($height+2, 0.9*$rad, 0.85*$dist);
-        }
-   }
+module pool_rack() {
+	translate([1,1,0]) {
+	    difference() {
+	        shell($height, $rad, $dist);
+	        translate([$inrad+($frac*$inrad), $inrad+($frac*$inrad), -1]) {
+	           shell($height+2, $inrad, $indist);
+	        }
+	   }
+	}
+}
+
+difference() {
+    pool_rack();
+	translate([-1.9,-1.9,0]) {
+		scale(1.3) {
+		   pool_rack();
+		}
+	}
 }
