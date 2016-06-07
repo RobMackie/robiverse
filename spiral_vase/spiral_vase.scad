@@ -3,43 +3,25 @@ $layer_x = 10;
 $layer_zy = 1;
 $layer_count = 12;
 
+$fn=16;
 
 module layer(nodes, scaling, angle) {
-
-    for (i = [0 : 22.5 : 360]) {
-        rotate([0,0,i]) {
-            make_surface_elem(0.75+abs((sin(i*4)*0.25)));
+    for (level = [0 : 40]) {
+        translate([0,0,level]) {
+            rotate([0,0,-level]) {
+			    for (i = [0 : 2 : 360]) {
+			        rotate([0,0,i]) {
+			            make_surface_elem((0.75+abs((sin(i*4)*0.25)))*(1+level/20));
+			        }
+			    }
+           }
         }
     }
-
-    for (i = [5 : 22.5 : 360]) {
-        rotate([0,0,i]) {
-            make_surface_elem(0.75+abs((sin(i*4)*0.25)));
-        }
-    }
-
-    for (i = [10 : 22.5 : 360]) {
-        rotate([0,0,i]) {
-            make_surface_elem(0.75+abs((sin(i*4)*0.25)));
-        }
-    }
-    for (i = [15 : 22.5 : 360]) {
-        rotate([0,0,i]) {
-            make_surface_elem(0.75+abs((sin(i*4)*0.25)));
-        }
-    }
-    for (i = [20 : 22.5 : 360]) {
-        rotate([0,0,i]) {
-            make_surface_elem(0.75+abs((sin(i*4)*0.25)));
-        }
-    }
-
 }
 
 module make_surface_elem(scaling) {
-    difference() {
-        cube([$layer_x * scaling, 1, 1]);
-        cube([($layer_x * scaling) - 1, 1.1, 1.1]);
+    translate([$layer_x * scaling, 0, 0]) {
+        cylinder(r=1, h=1);
     }
 }
 
@@ -52,7 +34,12 @@ module Spiral() {
 	}
 }
 
-render() {
-    layer(0,0,0);
+//render() {
+    difference() {
+        layer(0,0,0);
+        scale(0.99) {
+            layer(0,0,0);
+        }
+    }
 
-}
+//}
