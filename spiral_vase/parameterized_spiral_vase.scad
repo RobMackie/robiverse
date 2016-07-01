@@ -16,10 +16,10 @@ $top_to_bottom_multiplier = 3;   // a mulitplier, no units.
 // The difference between the 2 following numbers is likely your wall
 // thickness:
 $bottom_outer_wall_radius = 20; // in mm
-$bottom_inner_wall_radius = 19.9; // in mm
+$bottom_inner_wall_radius = 19; // in mm
 $sides = 6; // number of sides to polygons pretending to be circles
-$twist = 120; // degrees top twists compared to bottom
-$height = 120; // height in mm.
+$twist = 90; // degrees top twists compared to bottom
+$height = 60; // height in mm.
 $slices = 200; // how smooth do you want the twist? try 2, 10 and 200!
 // Parameter block end
 
