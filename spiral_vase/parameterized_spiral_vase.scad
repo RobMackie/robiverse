@@ -17,7 +17,7 @@ $top_to_bottom_multiplier = 2;   // a mulitplier, no units.
 // thickness:
 $bottom_outer_wall_radius = 20; // in mm
 $bottom_inner_wall_radius = 19.5; // in mm
-$sides = 6; // number of sides to polygons pretending to be circles
+$sides = 3; // number of sides to polygons pretending to be circles
 $twist = -360; // degrees top twists compared to bottom
 $height = 120; // height in mm.
 $slices = 200; // how smooth do you want the twist? try 2, 10 and 200!
@@ -25,7 +25,7 @@ $slices = 200; // how smooth do you want the twist? try 2, 10 and 200!
 // One or both of the following should be set to a non-zero value
 // The one that is set to zero won't render and if both are zero, then nothing happens.
 $spiral_right = 1;
-$spiral_left = 1;
+$spiral_left = 0;
 
 // Parameter block end
 
@@ -41,7 +41,7 @@ union() {
             linear_extrude(height = $height, twist = $twist, slices = $slices, scale=[$top_to_bottom_multiplier, $top_to_bottom_multiplier]) {
               difference() {
                   circle(r=$bottom_outer_wall_radius);
-                  circle(r=$bottom_inner_wall_radius);
+                 // circle(r=$bottom_inner_wall_radius);
               }
             }
             cylinder(r=$bottom_outer_wall_radius, h=1);
