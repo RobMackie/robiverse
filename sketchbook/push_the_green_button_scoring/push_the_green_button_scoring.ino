@@ -11,9 +11,10 @@ const char WiFiAPPSK[] = "pyrotech2016";
 
 const int LAST_BUTTON = 4;
 
-const int LED_PIN[LAST_BUTTON] = {5,4,0,2};
-const int SCORE_PIN[LAST_BUTTON] = {14,12,13,15};
-const int LEVEL_UP_PIN = 12;
+const int LED_PIN[LAST_BUTTON] = {5, 4, 0, 2};    // D1, D2, D3, D4 (ignore D0)
+
+const int SCORE_PIN[LAST_BUTTON] = {14, 12, 13, 3}; // D5, D6, D7, D9
+const int LEVEL_UP_PIN = 16;                       // D8
 
 bool button_state[LAST_BUTTON] = {false, false , false, false};
 
@@ -36,86 +37,103 @@ void setup()
   server.begin();
 }
 
+void print_state()
+{
+  Serial.print("Level: "); Serial.println(level);
+  for (int ii = 0; ii < LAST_BUTTON; ii++) {
+    Serial.print(ii); Serial.print(" - "); Serial.println(button_state[ii]);
+    Serial.print("Score: "); Serial.println(score);
+  }
+}
+
 void loop()
 {
+  //  print_state();
   // check reset pin, if on, and not recently pushed, then set everything to new level
-  if (digitalRead(LEVEL_UP_PIN) && last_level_reset > RESET_DEBOUNCE) {
-    level--;
-    for (int ii; ii < LAST_BUTTON; ii++) {
+  // Serial.println(digitalRead(LEVEL_UP_PIN));
+  int levelup_read;
+  levelup_read = 0;
+  levelup_read = digitalRead(LEVEL_UP_PIN);
+  if (!levelup_read && ((millis() - last_level_reset) >  RESET_DEBOUNCE )) {
+    for (int ii = 0; ii < LAST_BUTTON; ii++) {
       button_state[ii] = false;
       digitalWrite(LED_PIN[ii], LOW);
     }
-    if (level > 0) {
+    level--;
+    if (level < 0) {
       level = 0;
     }
     last_level_reset = millis();
+    print_state();
   }
   // check scoring pins, add score, set state and light LEDs
-  int state = 0;
+  int button_press = 0;
   for (int button = 0; button < LAST_BUTTON; button++) {
-    state = digitalRead(SCORE_PIN[button]);
-    if (state && !button_state[button]) {
-      button_state[button] = state;
+    button_press = digitalRead(SCORE_PIN[button]);
+    if (!button_press && !button_state[button]) {
+      button_state[button] = true;
       score += level_value[level];
       digitalWrite(LED_PIN[button], HIGH);
+      Serial.print("Score! :"); Serial.println(button);
     }
   }
 
   // Check if a client has connected
   WiFiClient client = server.available();
-  // Read the first line of the request
-  String req = client.readStringUntil('\r');
-  Serial.println(req);
-  client.flush();
+  if (client) {
+    // Read the first line of the request
+    String req = client.readStringUntil('\r');
+    Serial.println(req);
+    client.flush();
 
 
-  // Prepare the response. Start with the common header:
-  String s = "HTTP/1.0 200 OK\r\n";
-  s += "Content-Type: text/html\r\n\r\n";
-  s += "<!DOCTYPE HTML>\r\n<html>\r\n";
+    // Prepare the response. Start with the common header:
+    String s = "HTTP/1.0 200 OK\r\n";
+    s += "Content-Type: text/html\r\n\r\n";
+    s += "<!DOCTYPE HTML>\r\n<html>\r\n";
+    s += "<head><meta http-equiv=\"refresh\" content=\"1\"> <title>Field 1 Scoring Page </title> </head>";
 
-  s += String("<p><h1>");
-  s += "Score: ";
-  s += String(score);
-  s += String("</h1></p>");;
+    s += String("<p><h1>");
+    s += "Score: ";
+    s += String(score);
+    s += String("</h1></p>");;
 
-  s += "<br>"; // Go to the next line.
-  s += "</html>\n";
+    s += "<br>"; // Go to the next line.
+    s += "</html>\n";
 
-  // Send the response to the client
-  client.print(s);
+    // Send the response to the client
+    client.print(s);
+    client.flush();
+    Serial.println("Client disonnected");
+  }
   delay(1);
-  Serial.println("Client disonnected");
 }
 
 void setupWiFi()
 {
+  Serial.println("Set up WiFi");
   WiFi.mode(WIFI_AP);
 
-  // Do a little work to get a unique-ish name. Append the
-  // last two bytes of the MAC (HEX'd) to "Thing-":
-  uint8_t mac[WL_MAC_ADDR_LENGTH];
-  WiFi.softAPmacAddress(mac);
-  String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
-                 String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
-  macID.toUpperCase();
-  String AP_NameString = "PyroTech2016";
+  char* AP_SSID = "PyroTech2016";
+  char* AP_PW = "password";
 
-  char AP_NameChar[AP_NameString.length() + 1];
-  memset(AP_NameChar, 0, AP_NameString.length() + 1);
+  WiFi.softAP(AP_SSID, AP_PW);
 
-  for (int i = 0; i < AP_NameString.length(); i++)
-    AP_NameChar[i] = AP_NameString.charAt(i);
+  IPAddress myIP = WiFi.softAPIP();
 
-  WiFi.softAP(AP_NameChar, WiFiAPPSK);
+  Serial.print("AP IP address: ");
+
+  Serial.println(myIP);
+
 }
 
 void initHardware()
 {
   Serial.begin(115200);
-  for (int ii; ii < LAST_BUTTON; ii++) {
+  for (int ii = 0; ii < LAST_BUTTON; ii++) {
     pinMode(SCORE_PIN[ii], INPUT_PULLUP);
     pinMode(LED_PIN[ii], OUTPUT);
     digitalWrite(LED_PIN[ii], LOW);
   }
+  pinMode(LEVEL_UP_PIN, INPUT_PULLUP);
 }
