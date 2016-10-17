@@ -7,7 +7,7 @@ const int INPUT_PIN[LAST_PIN] = {1, 2, 3, 4}; // D1, D2, D3, D4
 const int CONTROL_PIN = 6;
 const int NUM_LEDS = 40;
 
-const int LED_POS[LAST_PIN] = {5, 15, 25, 35};
+const int LED_POS[LAST_PIN] = {4, 14, 24, 34};
 
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, CONTROL_PIN, NEO_GRB + NEO_KHZ800);

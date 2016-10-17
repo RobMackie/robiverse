@@ -14,7 +14,7 @@ const int LAST_BUTTON = 4;
 const int LED_PIN[LAST_BUTTON] = {5, 4, 0, 2};    // D1, D2, D3, D4 (ignore D0)
 
 const int SCORE_PIN[LAST_BUTTON] = {14, 12, 13, 3}; // D5, D6, D7, D9
-const int LEVEL_UP_PIN = 16;                       // D8
+const int LEVEL_UP_PIN = 1;                        // D8
 
 bool button_state[LAST_BUTTON] = {false, false , false, false};
 
@@ -83,7 +83,7 @@ void loop()
   if (client) {
     // Read the first line of the request
     String req = client.readStringUntil('\r');
-    Serial.println(req);
+   // Serial.println(req);
     client.flush();
 
 
@@ -104,7 +104,7 @@ void loop()
     // Send the response to the client
     client.print(s);
     client.flush();
-    Serial.println("Client disonnected");
+   // Serial.println("Client disonnected");
   }
   delay(1);
 }
