@@ -14,7 +14,8 @@ const int LAST_BUTTON = 4;
 const int LED_PIN[LAST_BUTTON] = {5, 4, 0, 2};    // D1, D2, D3, D4 (ignore D0)
 
 const int SCORE_PIN[LAST_BUTTON] = {14, 12, 13, 3}; // D5, D6, D7, D9
-const int LEVEL_UP_PIN = 1;                         // D8
+const int LEVEL_UP_PIN = 1;                         // D10
+const int TIMER_PIN = 16;                           // D0
 
 bool button_state[LAST_BUTTON] = {false, false , false, false};
 
@@ -29,6 +30,8 @@ unsigned long int last_level_reset = 0;
 int score = 0;
 
 WiFiServer server(80);
+
+uint32_t start_time = 0;
 
 void setup()
 {
@@ -48,6 +51,21 @@ void print_state()
 
 void loop()
 {
+  int flag = 0;
+  if (!start_time) {
+    start_time = millis();
+  }
+  uint32_t now = millis();
+  uint32_t run_time = now - start_time;
+  if (run_time > 120000 && run_time <= 125000) {
+    digitalWrite(TIMER_PIN, LOW);
+    flag = 0;
+  } else if (run_time > 125000) {
+    digitalWrite(TIMER_PIN, HIGH);
+    flag = 1;
+  } else {
+    flag = 0;
+  }
   //  print_state();
   // check reset pin, if on, and not recently pushed, then set everything to new level
   // Serial.println(digitalRead(LEVEL_UP_PIN));
@@ -83,9 +101,8 @@ void loop()
   if (client) {
     // Read the first line of the request
     String req = client.readStringUntil('\r');
-   // Serial.println(req);
+    // Serial.println(req);
     client.flush();
-
 
     // Prepare the response. Start with the common header:
     String s = "HTTP/1.0 200 OK\r\n";
@@ -96,7 +113,11 @@ void loop()
     s += String("<p><h1>");
     s += "Score: ";
     s += String(score);
-    s += String("</h1></p>");;
+    s += String("</h1></p>");
+    s += String("<p> start time: ") + String(start_time) + String("</p>");
+    s += String("<p> now time: ") + String(now) + String("</p>");
+    s += String("<p> run time: ") + String(run_time) + String("</p>");
+    s += String("<p> flag: ") + String(flag) + String("</p>");
 
     s += "<br>"; // Go to the next line.
     s += "</html>\n";
@@ -104,7 +125,7 @@ void loop()
     // Send the response to the client
     client.print(s);
     client.flush();
-   // Serial.println("Client disonnected");
+    // Serial.println("Client disonnected");
   }
   delay(1);
 }
@@ -133,7 +154,9 @@ void initHardware()
   for (int ii = 0; ii < LAST_BUTTON; ii++) {
     pinMode(SCORE_PIN[ii], INPUT_PULLUP);
     pinMode(LED_PIN[ii], OUTPUT);
+    pinMode(TIMER_PIN, OUTPUT);
     digitalWrite(LED_PIN[ii], LOW);
+    digitalWrite(TIMER_PIN, HIGH);
   }
   pinMode(LEVEL_UP_PIN, INPUT_PULLUP);
 }
