@@ -15,7 +15,7 @@ const int LED_PIN[LAST_BUTTON] = {5, 4, 0, 2};    // D1, D2, D3, D4 (ignore D0)
 
 const int SCORE_PIN[LAST_BUTTON] = {14, 12, 13, 3}; // D5, D6, D7, D9
 const int LEVEL_UP_PIN = 1;                         // D10
-const int TIMER_PIN = 16;                           // D0
+const int ALERT_PIN = 16;                           // D0
 
 bool button_state[LAST_BUTTON] = {false, false , false, false};
 
@@ -58,10 +58,10 @@ void loop()
   uint32_t now = millis();
   uint32_t run_time = now - start_time;
   if (run_time > 120000 && run_time <= 125000) {
-    digitalWrite(TIMER_PIN, LOW);
+    digitalWrite(ALERT_PIN, LOW);
     flag = 0;
   } else if (run_time > 125000) {
-    digitalWrite(TIMER_PIN, HIGH);
+    digitalWrite(ALERT_PIN, HIGH);
     flag = 1;
   } else {
     flag = 0;
@@ -154,9 +154,9 @@ void initHardware()
   for (int ii = 0; ii < LAST_BUTTON; ii++) {
     pinMode(SCORE_PIN[ii], INPUT_PULLUP);
     pinMode(LED_PIN[ii], OUTPUT);
-    pinMode(TIMER_PIN, OUTPUT);
+    pinMode(ALERT_PIN, OUTPUT);
     digitalWrite(LED_PIN[ii], LOW);
-    digitalWrite(TIMER_PIN, HIGH);
+    digitalWrite(ALERT_PIN, HIGH);
   }
   pinMode(LEVEL_UP_PIN, INPUT_PULLUP);
 }
