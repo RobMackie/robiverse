@@ -3,7 +3,7 @@
 //////////////////////
 // WiFi Definitions //
 //////////////////////
-// const char WiFiAPPSK[] = "PT_FIELD1";
+char WiFiAPPSK[] = "PT_FIELD_1";
 
 /////////////////////
 // Pin Definitions //
@@ -75,6 +75,7 @@ void loop()
     if (!endgame) {
       captured_score = score;
       endgame = 1;
+      digitalWrite(ALERT_PIN, LOW);
     }
   } else {
     flag = 0;
@@ -141,11 +142,11 @@ void loop()
         endgame = 0;
         captured_score = 0;
       }
-      
+
       s = "HTTP/1.0 200 OK\r\n";
       s += "Content-Type: text/html\r\n\r\n";
       s += "<!DOCTYPE HTML>\r\n<html>\r\n";
-      s += "<head><meta http-equiv=\"refresh\" content=\"1\"> <title>Field 1 Scoring Page </title> </head>";
+      s += "<head><meta http-equiv=\"refresh\" content=\"1\"> <title>Field Scoring Page </title> </head>";
 
       s += String("<p><h1>");
       s += "Score: ";
@@ -157,6 +158,10 @@ void loop()
       s += String("</h1></p>");
       s += String("<p> <h1> run time: ") + String(run_time/1000) + String("</h1></p>");
 
+      if (run_time > 150000) {
+        s += String("<br/<p><h1><bold> GAME COMPLETE </bold></h1></p><br/>");
+      }
+
       s += "<br>"; // Go to the next line.
       s += "</html>\n";
 
@@ -165,13 +170,13 @@ void loop()
       s = "HTTP/1.0 200 OK\r\n";
       s += "Content-Type: text/html\r\n\r\n";
       s += "<!DOCTYPE HTML>\r\n<html>\r\n";
-      s += "<head> <title>Field 1 Scoring Page </title> </head>";
+      s += "<head> <title>Field Scoring Page </title> </head>";
       s += String("<table><tr><td>");
-      s += String("<a href=\"/score\"><button> <H1> Start Now !  </H1> </button></a>");
+      s += String("<a href=\"/score\"><button> <H1> Start Now !  </H1></button></a>");
       s += String("</td>");
       s += String("</tr></table>");
       s += "</html>\n";
-      
+
     }
     // Send the response to the client
     client.print(s);
@@ -186,7 +191,7 @@ void setupWiFi()
   Serial.println("Set up WiFi");
   WiFi.mode(WIFI_AP);
 
-  char* AP_SSID = "PT_FIELD1";
+  char* AP_SSID = WiFiAPPSK;
   char* AP_PW = "password";
 
   WiFi.softAP(AP_SSID, AP_PW);
