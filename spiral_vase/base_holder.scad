@@ -23,42 +23,49 @@ module subtractables() {
     }
 }
 
-difference() {
-    union() {
-        translate([0,0,$height]) {
-            rotate([0,180,0]) {
-                difference() {
-                    cone();
-                    subtractables();
-                    translate([0,0,-1]) {
-                        cylinder(r=36, h=5);
-                    }
-                    for (i = [0 : 3]) {
-                        rotate([0,0,90*i]) {
-                            translate([4,4,-1]) {
-                                cube([50,50,$height-10]);
-                            }
+module main_event() {
+    difference() {
+        union() {
+            translate([0,0,$height]) {
+                rotate([0,180,0]) {
+                    difference() {
+                        cone();
+                        subtractables();
+                        translate([0,0,-1]) {
+                            cylinder(r=36, h=5);
                         }
+                        for (i = [0 : 3]) {
+                            rotate([0,0,90*i]) {
+                                translate([4,4,-1]) {
+                                    cube([50,50,$height-10]);
+                                }
+                            }
+                        } 
                     }
                 }
             }
+            translate([25,-5,0]) {
+                cube([40,10,10]);
+            }
+                translate([-65,-5,0]) {
+                cube([40,10,10]);
+            }
         }
-        translate([25,-5,0]) {
-            cube([40,10,10]);
+        translate([60,0,5]) {
+            rotate([0,90,0]) {
+                cylinder(r=1, h=10);
+            }
         }
-            translate([-65,-5,0]) {
-            cube([40,10,10]);
-        }
-    }
-    translate([60,0,5]) {
-        rotate([0,90,0]) {
-            cylinder(r=1, h=10);
-        }
-    }
-    translate([-70,0,5]) {
-        rotate([0,90,0]) {
-            cylinder(r=1, h=10);
+        translate([-70,0,5]) {
+            rotate([0,90,0]) {
+                cylinder(r=1, h=10);
+            }
         }
     }
 }
-    
+
+difference () {
+    main_event();
+    translate([0,0,10]) {
+       cylinder(r=100, 100);
+    }
