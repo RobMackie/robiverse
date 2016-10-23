@@ -66,6 +66,7 @@ module main_event() {
 
 difference () {
     main_event();
-    translate([0,0,10]) {
+    translate([0,0,30]) {
        cylinder(r=100, 100);
     }
+}
