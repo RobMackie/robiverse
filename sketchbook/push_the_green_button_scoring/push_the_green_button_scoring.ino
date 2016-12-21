@@ -3,7 +3,7 @@
 //////////////////////
 // WiFi Definitions //
 //////////////////////
-char WiFiAPPSK[] = "PT_FIELD_1";
+char WiFiAPPSK[] = "PT_FIELD_2";
 
 /////////////////////
 // Pin Definitions //

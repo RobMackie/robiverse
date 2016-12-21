@@ -12,6 +12,8 @@ char WiFiAPPSK[] = "kira-wifi";
 
 WiFiServer server(80);
 
+const int LED = 5;
+
 
 void setup()
 {
@@ -45,6 +47,12 @@ void loop()
     temperature = analogRead(A0);
     temperature = 1023 - temperature;
     temperature = temperature/10;
+
+    if (temperature > 74) {
+       digitalWrite(LED, HIGH);
+    } else {
+       digitalWrite(LED, LOW);
+    }
     
     // Kira's code goes here
     s += String("<body>");
@@ -85,4 +93,6 @@ void setupWiFi()
 void initHardware()
 {
   Serial.begin(115200);
+  pinMode(LED, OUTPUT);
+  pinMode(LED, HIGH);
 }
