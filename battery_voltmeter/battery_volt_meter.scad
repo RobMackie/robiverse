@@ -5,7 +5,7 @@ $t_numbers0 = ["3459"];
  Just fill this table with team numbers. An empty 
  array will not generate a chassis, a missing entry
  will not generate a chassis. Do not add more 
- than 3 entries per row for print bed dimensions (go measure soon)
+ than 3 entries per row for print bed dimensions 
  */
 /*
 $t_numbers0 = ["3459", "2222", "3333"];
@@ -16,8 +16,7 @@ $t_numbers3 = ["9999", "9998", "9997"];
 
 
 /* 
-   Code to generate the voltmeter chassis and then to read the numbers and 
-   create objects
+   Code to generate the voltmeter chassis and then to read the numbers and create objects
 */
 $thickness = 7;
 $width=33.75;
