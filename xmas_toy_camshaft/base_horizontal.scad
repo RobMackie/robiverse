@@ -31,11 +31,6 @@ module make_stauntion_holes(rad, offs) {
 module make_plate() {
     difference() {
         cube([$major_r*2, $major_r,$thickness/2]);
-        translate([$major_r, $major_r/2, -1]) { 
-            for (ring = [1:$major_r/$ring_size-1]) {
-                notched_ring(ring*$ring_size, $bit_diam);
-            }
-        }
         make_stauntion_holes($stick_diam/2, $inch/2);
         make_side_slots(); 
     }
@@ -86,11 +81,24 @@ module make_side() {
 
 // lay out
 
-make_plate();
-
-translate([0, $major_r + $bit_diam, 0]) {
-    make_side();
-    translate([$major_r + $bit_diam,0,0]) {
+module layout() {
+    make_plate();
+    
+    translate([0, $major_r + $bit_diam, 0]) {
         make_side();
+        translate([$major_r + $bit_diam,0,0]) {
+            make_side();
+        }
     }
+}
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+           layout();
+       }
+    }
+} else {
+    layout();
 }

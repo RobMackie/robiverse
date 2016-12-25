@@ -15,28 +15,13 @@ module piston() {
     }
 }
 
-for (iter = [0:6]) {
-    translate([iter*($valve_r*2+$bit_diam),0,0]) {
-        piston();
-    }
-}
-
-
-for (iter = [1:6]) {
-    translate([iter*($valve_r*2+$bit_diam)+$valve_r,$arm_len + $valve_r-5,0]) {
-        rotate([0,0,180]) {
-            piston();
-        }
-    }
-}
-
-translate([0, $valve_r+$arm_len + $bit_diam-3, 0]) {
+module layout() {
     for (iter = [0:6]) {
         translate([iter*($valve_r*2+$bit_diam),0,0]) {
             piston();
         }
-    }
-
+    }   
+    
     for (iter = [1:6]) {
         translate([iter*($valve_r*2+$bit_diam)+$valve_r,$arm_len + $valve_r-5,0]) {
             rotate([0,0,180]) {
@@ -44,4 +29,33 @@ translate([0, $valve_r+$arm_len + $bit_diam-3, 0]) {
             }
         }
     }
+    
+    translate([0, $valve_r+$arm_len + $bit_diam-3, 0]) {
+        for (iter = [0:6]) {
+            translate([iter*($valve_r*2+$bit_diam),0,0]) {
+                piston();
+            }
+        }
+    
+        for (iter = [1:6]) {
+            translate([iter*($valve_r*2+$bit_diam)+$valve_r,$arm_len + $valve_r-5,0]) {
+                rotate([0,0,180]) {
+                    piston();
+                }
+            }
+        }
+    }
 }
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+           layout();
+       }
+    }
+} else {
+    layout();
+}
+
+

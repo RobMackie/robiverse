@@ -1,4 +1,4 @@
-$thickness=6;
+$thickness=3.175;
 $detail=64;
 $bit_diam=3.175;
 
@@ -35,6 +35,22 @@ module make_stauntion_holes(rad, offs) {
     }
 }
 
+module make_side_slots() {
+    translate([10, $inch/2+10, -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    translate([10, $major_r-($inch/2+10)-$tab_length, -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    
+    translate([$major_r*2-10-$thickness, $inch/2+10 , -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    translate([$major_r*2-10-$thickness, $major_r-($inch/2+10)- $tab_length, -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }     
+}
+
 module make_plate() {
     difference() {
         cube([$major_r*2, $major_r,$thickness/2]);
@@ -46,10 +62,24 @@ module make_plate() {
             }
         }
         make_stauntion_holes($stick_diam, $inch/2);
+        make_side_slots();
     }
 }
 
-make_plate();
-translate([0,$major_r+$bit_diam,0,]) {
+module layout() {
     make_plate();
+    translate([0,$major_r+$bit_diam,0,]) {
+        make_plate();
+    }
+}
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+           layout();
+       }
+    }
+} else {
+    layout();
 }

@@ -23,17 +23,29 @@ module cam_disk(radius, offset) {
     }
 }
 
-
-translate([$cam_r, $cam_r, 0]) {
-    for (count_x = [0:4]) {
-        for (count_y = [0:4]) {
-            translate([($cam_r*2 + $bit_diam) * count_x,
-                       ($cam_r*2 + $bit_diam) * count_y, 
-                       0]) {
-                cam_disk($cam_r,$cam_offs);
+module layout() {
+    translate([$cam_r, $cam_r, 0]) {
+        for (count_x = [0:4]) {
+            for (count_y = [0:4]) {
+                translate([($cam_r*2 + $bit_diam) * count_x,
+                           ($cam_r*2 + $bit_diam) * count_y, 
+                           0]) {
+                    cam_disk($cam_r,$cam_offs);
+                }
             }
         }
     }
+}
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+           layout();
+       }
+    }
+} else {
+    layout();
 }
 
 /*

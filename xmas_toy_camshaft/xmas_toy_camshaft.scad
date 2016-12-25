@@ -40,15 +40,29 @@ module make_slots(rings, x, y) {
     }
 }
 
-translate([$major_r, $major_r, 0]) {
-    difference() {
-        cylinder(r=$major_r, h=$thickness/2, $fn=$detail);
-        translate([0,0,-1]) {
-            cylinder(r=0.25*$inch,h=$thickness);
-            for (ring = [1:$major_r/$ring_size-1]) {
-                notched_ring(ring*$ring_size, $bit_diam);
-                make_slots(ring, $tab_width, $tab_length);
+module layout() {
+    translate([$major_r, $major_r, 0]) {
+        difference() {
+            cylinder(r=$major_r, h=$thickness/2, $fn=$detail);
+            translate([0,0,-1]) {
+                cylinder(r=0.25*$inch,h=$thickness);
+                for (ring = [1:$major_r/$ring_size-1]) {
+                    notched_ring(ring*$ring_size, $bit_diam);
+                    make_slots(ring, $tab_width, $tab_length);
+                }
             }
-        }
-   }
+       }
+    }
 }
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+           layout();
+       }
+    }
+} else {
+    layout();
+}
+
