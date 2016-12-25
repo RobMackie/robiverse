@@ -36,10 +36,11 @@ translate([$cam_r, $cam_r, 0]) {
     }
 }
 
-
+/*
 translate([292,0,0]) {
     cube([1,304,10]);
 }
 translate([0,304,0]) {
     cube([292,1,10]);
 }
+*/

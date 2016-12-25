@@ -79,7 +79,7 @@ module make_side() {
             }        
         }
         translate([$side/2,$side/2,-1]) {
-            cylinder(r=$inch/8, h=100 /*$thickness+2*/);
+            cylinder(r=$inch/8+ 0.5 , h=100 /*$thickness+2*/);
         }
     }
 }

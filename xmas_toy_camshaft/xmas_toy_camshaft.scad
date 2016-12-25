@@ -40,7 +40,7 @@ module make_slots(rings, x, y) {
     }
 }
 
-translate([5*$inch, 5*$inch, 0]) {
+translate([$major_r, $major_r, 0]) {
     difference() {
         cylinder(r=$major_r, h=$thickness/2, $fn=$detail);
         translate([0,0,-1]) {
