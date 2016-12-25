@@ -5,6 +5,10 @@ $bit_diam=3.175;
 $inch=25.4;
 
 $stick_diam=$inch/4;
+$tab_width=3.175;
+$tab_length=7;
+$major_r = 5*$inch;
+$ring_size = $inch/1.9;
 
 module ring(radius, rim) {
     difference() {
@@ -27,16 +31,24 @@ module notched_ring(radius, rim) {
     }
 }
 
+module make_slots(rings, x, y) {
+    translate([-(rings*$ring_size+$ring_size/2+x/2), -y/2, -1]) {
+        cube([x,y,$thickness+2]);
+    }
+    translate([+(rings*$ring_size+$ring_size/2-x/2), -y/2, -1]) {
+        cube([x,y,$thickness+2]);
+    }
+}
+
 translate([5*$inch, 5*$inch, 0]) {
     difference() {
-        cylinder(r=5*$inch, h=$thickness/2, $fn=$detail);
+        cylinder(r=$major_r, h=$thickness/2, $fn=$detail);
         translate([0,0,-1]) {
             cylinder(r=0.25*$inch,h=$thickness);
-        notched_ring(1*$inch, $bit_diam);
-        notched_ring(2*$inch, $bit_diam);
-        notched_ring(3*$inch, $bit_diam);
-        notched_ring(4*$inch, $bit_diam);
+            for (ring = [1:$major_r/$ring_size-1]) {
+                notched_ring(ring*$ring_size, $bit_diam);
+                make_slots(ring, $tab_width, $tab_length);
+            }
         }
-        /* place stick mounting holes on each ring */
-    }
+   }
 }
