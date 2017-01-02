@@ -1,5 +1,6 @@
 $thickness=6;
 $detail=64;
+//$bit_diam=3.175;
 $bit_diam=3.175;
 
 $inch=25.4;
@@ -22,11 +23,11 @@ module ring(radius, rim) {
 module notched_ring(radius, rim) {
     difference() {
         ring(radius, rim);
-        translate([radius - rim -1,-0.25,-1]) {
-            cube([rim+2,0.5,$thickness+2]);
+        translate([radius - rim -1,-1,-1]) {
+            cube([rim+2,2,$thickness+2]);
         }
-        translate([-(radius + rim-1),-0.25,-1]) {
-            cube([rim+2,0.5,$thickness+2]);
+        translate([-(radius + rim-1),-1,-1]) {
+            cube([rim+2,2,$thickness+2]);
         }
     }
 }

@@ -10,6 +10,12 @@ $tab_length=7;
 $major_r = 5*$inch;
 $ring_size = $inch/1.9;
 
+$tab_sep = 2 * $inch;
+$tab_i = $inch/4-$thickness/2;
+
+
+function left_tab(center, sep, size) = (center - sep/2);
+function right_tab(center, sep, size) = (center + sep/2 - size);
 
 module make_slots_pass(rings, x, y) {
     translate([-(rings*$ring_size+$ring_size/2+x/2+1), -y/2-1, -1]) {
@@ -36,6 +42,22 @@ module make_stauntion_holes(rad, offs) {
 }
 
 module make_side_slots() {
+    translate([$tab_i, left_tab($major_r/2, $tab_sep, $tab_length), -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    translate([$tab_i, right_tab($major_r/2, $tab_sep, $tab_length), -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    
+    translate([$major_r*2-$tab_i-$thickness, left_tab($major_r/2, $tab_sep, $tab_length), -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }
+    translate([$major_r*2-$tab_i-$thickness, right_tab($major_r/2, $tab_sep, $tab_length), -1]) {
+        cube([$thickness, 7, $thickness+2]);
+    }     
+}
+/*
+module make_side_slots() {
     translate([10, $inch/2+10, -1]) {
         cube([$thickness, 7, $thickness+2]);
     }
@@ -50,6 +72,7 @@ module make_side_slots() {
         cube([$thickness, 7, $thickness+2]);
     }     
 }
+*/
 
 module make_plate() {
     difference() {
@@ -57,7 +80,6 @@ module make_plate() {
         translate([$major_r, $major_r/2, -1]) { 
             cylinder(r=0.25*$inch,h=$thickness);
             for (ring = [1:$major_r/$ring_size-1]) {
-                notched_ring(ring*$ring_size, $bit_diam);
                 make_slots_pass(ring, $tab_width, $tab_length);
             }
         }

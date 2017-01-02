@@ -2,7 +2,7 @@
 $inch = 25.4;
 $thickness=4;
 
-$shaft_diam=$inch/4;
+$shaft_diam=$inch/2;
 
 $detail=64;
 
@@ -37,7 +37,7 @@ module layout() {
     }
 }
 
-$2d = 0;
+$2d = 1;
 if ($2d) {
     projection(cut=true) {
        translate([0,0,0]) rotate([0,0,0]) {
