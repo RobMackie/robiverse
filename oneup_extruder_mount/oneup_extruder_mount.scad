@@ -45,9 +45,11 @@ module car () {
 module assembly() {
     union() {
         car();
+        /*
         translate([-41.41, 0, 0]) {
             cube([43.41, 43.41, 43.41]);
         }
+        */
     }
 }
 

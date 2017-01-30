@@ -57,19 +57,6 @@ module rounded_rect_p_y (r, l, h) {
    }
 }
 
-$pierced = 1;
-if (1 == $pierced) {
-   union () {
-      rounded_rect_p_x(r=5, l=60, h=6.35);
-      rounded_rect_p_y(r=5, l=60, h=6.35);
-   }
-} else {
-   union () {
-      rounded_rect_x(r=5, l=60, h=6.35);
-      rounded_rect_y(r=5, l=60, h=6.35);
-   }
-}
-
 module mitered_box_x (ww, ll, hh) {
    $rr=ww/3;
    $lll = ll - 2*$rr; 
@@ -126,5 +113,18 @@ module workspace_bounds(x, y) {
              cube([x,y,$eigth+2]);
          }
       }
+   }
+}
+
+$pierced = 1;
+if (1 == $pierced) {
+   union () {
+      rounded_rect_p_x(r=5, l=60, h=6.35);
+      rounded_rect_p_y(r=5, l=60, h=6.35);
+   }
+} else {
+   union () {
+      rounded_rect_x(r=5, l=60, h=6.35);
+      rounded_rect_y(r=5, l=60, h=6.35);
    }
 }
