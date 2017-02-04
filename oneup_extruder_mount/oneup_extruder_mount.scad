@@ -29,12 +29,12 @@ module car () {
         }  
         translate([0, $wide/3, $total_height - $back_height/2]) {
             rotate([0,90,0]) {
-               cylinder(r=2, h=40, $fn=16);
+               cylinder(r=2, h=50, $fn=16);
             }
         } 
         translate([0, $wide/3 * 2, $total_height - $back_height/2]) {
             rotate([0,90,0]) {
-               cylinder(r=2, h=40, $fn=16);
+               cylinder(r=2, h=50, $fn=16);
             }
         }  
     }
