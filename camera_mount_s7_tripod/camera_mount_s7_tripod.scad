@@ -12,9 +12,9 @@ union() {
 
 module phone_holder() {
     difference() {
-        cube([19, 85, 80]);
+        cube([19.5, 85, 80]);
         translate([5,6,5]) {
-            cube([12.25,75,80]);
+            cube([12.75,75,80]);
         }
         // start button
         translate([10,30,10]) {
