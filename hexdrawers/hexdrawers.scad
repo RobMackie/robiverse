@@ -1,11 +1,14 @@
 
 $shell_hex=30;
-$shell_height=10;
+$shell_height=2;
 $wall=4;
 $wall_gap=0.25;
 $base_hex_hole=20;
 
 $end_block=0.6;
+
+$receiver=3.3;
+$peg=3.0;
 
 
 module hex_cylinder(r_in, h_in) {
@@ -20,14 +23,14 @@ module interlock_shell() {
             hex_cylinder($shell_hex, $shell_height);
             for ($edge = [0:2]) {
                 rotate([0,0,30+$edge*120]) {
-                    translate([33.5,0,0]) {
-                        cylinder(r=3.1, h=90);
+                    translate([33.6,0,0]) {
+                        cylinder(r=$receiver, h=90);
                     }
-                    translate([33.5,-10,0]) {
-                        cylinder(r=3.1, h=90);
+                    translate([33.6,-10,0]) {
+                        cylinder(r=$receiver, h=90);
                     }
-                     translate([33.5,10,0]) {
-                        cylinder(r=3.1, h=90);
+                     translate([33.6,10,0]) {
+                        cylinder(r=$receiver, h=90);
                     }
                 }
             }
@@ -35,13 +38,13 @@ module interlock_shell() {
         for ($edge = [0:2]) {
             rotate([0,0,90+$edge*120]) {
                 translate([38.5,0,0]) {
-                    cylinder(r=3, h=$shell_height);
+                    cylinder(r=$peg, h=$shell_height);
                 }
                 translate([38.5,-10,0]) {
-                    cylinder(r=3, h=$shell_height);
+                    cylinder(r=$peg, h=$shell_height);
                 }
                  translate([38.5,10,0]) {
-                    cylinder(r=3, h=$shell_height);
+                    cylinder(r=$peg, h=$shell_height);
                 }
             }
         }
