@@ -7,17 +7,17 @@ translate([8.1, 8.1, 0]) {
             cylinder(r=8, h=3, $fn=64);
         }
         translate([0,0,4]) {
-            cylinder(r=2, h=6, $fn=64);
+            cylinder(r=3, h=6, $fn=64);
         }
         translate([0,0,-23.8]) {
             sphere(r=25, $fn=64);
         }
     }
     
-    translate([18,0,0]) {
+    translate([18,0,1]) {
         difference() {
             union() {
-                cylinder(r=1.99, h=8.9, $fn=64);
+                cylinder(r=2.99, h=8.9, $fn=64);
                 cylinder(r=8, h=3, $fn=64);
             }
             translate([0,0,-23.8]) {
