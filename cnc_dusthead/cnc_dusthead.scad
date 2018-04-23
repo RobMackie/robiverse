@@ -13,7 +13,7 @@ module router_cutout() {
 // router_cutout();
 
 module dust_cuff() {
-    cube([$side+(1*$inch), $side+(3.25*$inch), $inch/2]);
+    cube([$side+(0.5*$inch), $side+(3.25*$inch), $inch/2]);
 }
 
 module hose_hole() {
@@ -24,9 +24,9 @@ module brush_cut() {
     $bside = $side + $inch;
     $factor = 2.0;
     difference() {
-        cube([$bside-$inch/2, $bside+($factor*$inch), $inch * 3/8]);
+        cube([$bside-$inch*5/8, $bside+($factor*$inch), $inch * 3/8]);
         translate([$inch/8,$inch/8,0]) {
-            cube([$bside-$inch*3/4, $bside+($factor*$inch)-$inch/4, $inch/4]);
+            cube([$bside-$inch*7/8, $bside+($factor*$inch)-$inch/4, $inch/4]);
         }
     }
 }
@@ -34,17 +34,21 @@ module brush_cut() {
 module assembly() {
     difference() {
         dust_cuff();
-        translate([$inch/2, $inch*3/8, 0]) {
+        translate([$inch/4, $inch*3/8, 0]) {
             router_cutout();
         }
-        translate([4*$hose_hole_r, (6+7/8)*$inch, 0]) {
+        translate([3.75*$hose_hole_r, (6+7/8)*$inch, 0]) {
             hose_hole();
         }
-        translate([$inch*1/4,$inch*1/8,1/4*$inch]) {
+        translate([$inch*1/16,$inch*1/8,1/4*$inch]) {
             brush_cut();
         }
     }
 }
 
 assembly();
-cube([1, 8*$inch, 25]);
+/*
+translate([0,0,0]) {
+    cube([1/4*$inch, 50, 20]);
+}
+*/
