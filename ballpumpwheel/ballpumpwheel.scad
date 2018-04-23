@@ -27,9 +27,9 @@ module ball_pump_wheel(major_r, bite_r, axle_r, z_dim, detail) {
             }
         }
         // axle hole
-         translate([0,0,-1]) {
-             cylinder(r=axle_r, h=$cut_z, $fn=detail);
-         }
+        translate([0,0,-1]) {
+            cylinder(r=axle_r, h=$cut_z, $fn=detail);
+        }
     }
 }
 
