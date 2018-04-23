@@ -1,6 +1,6 @@
 
 $shell_hex=30;
-$shell_height=2;
+$shell_height=50;
 $wall=4;
 $wall_gap=0.25;
 $base_hex_hole=20;
@@ -23,13 +23,13 @@ module interlock_shell() {
             hex_cylinder($shell_hex, $shell_height);
             for ($edge = [0:2]) {
                 rotate([0,0,30+$edge*120]) {
-                    translate([33.6,0,0]) {
+                    translate([33.75,0,0]) {
                         cylinder(r=$receiver, h=90);
                     }
-                    translate([33.6,-10,0]) {
+                    translate([33.75,-10,0]) {
                         cylinder(r=$receiver, h=90);
                     }
-                     translate([33.6,10,0]) {
+                     translate([33.75,10,0]) {
                         cylinder(r=$receiver, h=90);
                     }
                 }
