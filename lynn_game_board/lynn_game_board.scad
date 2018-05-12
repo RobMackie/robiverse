@@ -1,5 +1,6 @@
 $inch = 25.4;
 
+module make_it() { 
 union() {
     difference() {
         cube([4*$inch, 8*$inch, $inch/8]);
@@ -31,7 +32,7 @@ union() {
             }
         }
     }
-    
+/*    
     translate([7.25*$inch, 0, 0]) {
         difference() {
             cube([4*$inch, 8*$inch, $inch/8]);
@@ -51,7 +52,7 @@ union() {
     translate([7*$inch, 5.5*$inch, 0]) {
         cube([0.3*$inch,$inch/16,$inch/8]);
     }
-    
+*/    
     translate([0, 8.125*$inch, 0]) {
         difference() {
             cube([8*$inch, 3*$inch, $inch/8]);
@@ -71,5 +72,20 @@ union() {
     translate([5.5*$inch, 8*$inch, 0]) {
         cube([$inch/16,0.3*$inch,$inch/8]);
     }    
-    
+}
+}
+
+$2d = 0;
+if ($2d) {
+    projection(cut=true) {
+       translate([0,0,0]) rotate([0,0,0]) {
+         make_it();
+       }
+    }
+} else {
+    make_it();
+//  for measuring and calibrating
+//    translate([60,40,0]) {
+//      cube([20,5,1]);
+//    }
 }
