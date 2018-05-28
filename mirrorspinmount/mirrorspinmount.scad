@@ -47,8 +47,23 @@ module simulated_mirror (side, thick, rr, rail, clearance, rot) {
             translate([(side-1)/2,0,-6]) {
                 cylinder(r=$mount_r/1.5, h=side+2*rail+clearance); 
             }
-            translate([(side-1)/2,0,-2]) {
-                cylinder(r=$mount_r*2, h=2, $fn=32); 
+            difference() {
+                translate([(side-1)/2,0,-1]) {
+                    cylinder(r=$mount_r*2, h=clearance/2, $fn=32); 
+                }
+                // remove a ring to make threadway in pulley
+                // by creating a bigger annulus that we can remove
+                // creating the annulus that will be removed:
+                difference() {
+                    // base of annulus
+                    translate([(side-1)/2,0,-0.65]) {
+                        cylinder(r=($mount_r*2)+1, h=clearance/6, $fn=32); 
+                    }
+                    // removed center of annulus
+                    translate([(side-1)/2,0,-0.65]) {
+                        cylinder(r=($mount_r*2)-0.5, h=clearance/6, $fn=32); 
+                    }
+                }
             }
         }
     }    
