@@ -21,7 +21,7 @@ module mirror_mount (hollow_side, rail_size, clearance) {
             cube([$inner_size,$inner_size,rail_size+2]);
         }
         rotate([-90,0,0]) {
-            translate([(hollow_side+rail_size+clearance)/2+$mount_r*2,-rail_size/2,-1]) {
+            translate([(hollow_side+rail_size-1)/2+$mount_r*2,-rail_size/2,-1]) {
                 cylinder(r=$mount_r, h=$outer_size+2, $fn=64);
             }
         }
@@ -45,7 +45,7 @@ module simulated_mirror (side, thick, rr, rail, clearance, rot) {
         
         rotate([-90,0,0]) {
             translate([(side-1)/2,0,-6]) {
-                cylinder(r=$mount_r/1.5, h=side+2*rail+clearance); 
+                cylinder(r=$mount_r/1.5, h=side+2*rail+clearance, $fn=64); 
             }
             difference() {
                 translate([(side-1)/2,0,-1]) {
