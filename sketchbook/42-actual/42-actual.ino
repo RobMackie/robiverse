@@ -21,8 +21,7 @@ D10 = GPIO1;
 /* Set these to your desired credentials. */
 const char *ssid = "MackieLand";
 const char *password = "thereisnospoon";
-// http://192.168.4.1/left
-// http://192.168.4.1/right
+
 
 ESP8266WebServer server(80);
 Servo myservo;  // create servo object to control a servo 
@@ -42,7 +41,7 @@ const char* light1_status = status_on;
 const char* light2_status = status_on;
 const char* direction_status = status_left;
 
-
+int buffer_length = 1024; 
 char buffer[1024];
 
 const char* format =
@@ -55,29 +54,28 @@ const char* format =
                  "</p>"
                  "<h2> Status </h2>"
                       "<ul>"
-                          "<li> light 1: %s</li>"  //arg 1
-                          "<li> light 2: %s</li>"  //arg 2
-                          "<li> Direction: %s </li>" //arg 3
+                          "<li> light 1: %s</li>"  
+                          "<li> light 2: %s</li>"  
+                          "<li> Direction: %s </li>"
                       "</ul>"
                  "<h2> Commands </h2>"
                  "<ul>"
                       "<li> <a href=\"/\"> No operation </a> <p/> </li>"
-                      "<li> <a href=\"/light/1/on\"> Turn light 1 on <p/> </a> </li>"
-                      "<li> <a href=\"/light/1/off\"> Turn light 1 off <p/> </a> </li>"
-                      "<li> <a href=\"/light/2/on\"> Turn light 2 on <br/> </a> </li>"
-                      "<li> <a href=\"/light/2/off\"> Turn light 2 off <p/> </a> </li>"
-                      "<li> <a href=\"/left\"> Rotate counterclockwise <p/> </a> </li>"
-                      "<li> <a href=\"/straight\"> Go straight </a> <p/> </li>"
-                      "<li> <a href=\"/right\"> Rotate clockwise </a> <p/> </li>"
+                      "<li> <a href=\"/light/1/on\"> Turn light 1 on </a> </li>"
+                      "<li> <a href=\"/light/1/off\"> Turn light 1 off  </a> </li>"
+                      "<li> <a href=\"/light/2/on\"> Turn light 2 on </a> </li>"
+                      "<li> <a href=\"/light/2/off\"> Turn light 2 off  </a> </li>"
+                      "<li> <a href=\"/left\"> Rotate counterclockwise </a> </li>"
+                      "<li> <a href=\"/straight\"> Go straight </a>  </li>"
+                      "<li> <a href=\"/right\"> Rotate clockwise </a> </li>"
                  "</ul>"
               "</body>"
            "</html>";
 
 char* thePage() {
-  snprintf(buffer, 1024, format, light1_status, light2_status, direction_status);
+  snprintf(buffer, buffer_length, format, light1_status, light2_status, direction_status);
   return buffer;
 }
-
 
 /* Just a little test message.  Go to http://192.168.4.1 in a web browser
  * connected to this access point to see it.
@@ -127,17 +125,17 @@ void handleStraight() {
 }
 
 void setup() {
-	delay(1000);
-	Serial.begin(115200);
-	Serial.println();
-	Serial.print("Configuring access point...");
-	/* You can remove the password parameter if you want the AP to be open. */
-	WiFi.softAP(ssid, password);
+  delay(1000);
+  Serial.begin(115200);
+  Serial.println();
+  Serial.print("Configuring access point...");
+  /* You can remove the password parameter if you want the AP to be open. */
+  WiFi.softAP(ssid, password);
 
-	IPAddress myIP = WiFi.softAPIP();
-	Serial.print("AP IP address: ");
-	Serial.println(myIP);
-	server.on("/", handleRoot);
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+  server.on("/", handleRoot);
   server.on("/left", handleLeft);
   server.on("/right", handleRight);
   server.on("/straight", handleStraight);
@@ -145,18 +143,19 @@ void setup() {
   server.on("/light/1/off", turnOff_1); 
   server.on("/light/2/on", turnOn_2);  
   server.on("/light/2/off", turnOff_2);  
-	server.begin();
-	Serial.println("HTTP server started");
+  server.begin();
+  Serial.println("HTTP server started");
 
    pinMode(LIGHT_1, OUTPUT);     // Initialize GPIO2 pin as an output
-   pinMode(LIGHT_2, OUTPUT);     // Initialize GPIO2 pin as an output
-   myservo.attach(SERVO_1);  // attaches the servo on D1 to the servo object 
+   pinMode(LIGHT_2, OUTPUT);     // Initialize GPI16 pin as an output
+   myservo.attach(SERVO_1);  // attaches the servo on D1 to the servo object )
    thePage();
-   int len = strlen(buffer);
-   Serial.print("Buffer Length:");
-   Serial.println(len);
+   int buffer_length = strlen(buffer);
+   Serial.print("buffer length: ");
+   Serial.print(buffer_length);
 }
 
 void loop() {
-	server.handleClient();
+  server.handleClient();
 }
+
