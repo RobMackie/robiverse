@@ -49,27 +49,40 @@ const char* format =
          "<html>"
              "<head> <title> MackieLand Main Page </title> </head>"
              "<body>"
-                      "<h1> MackieLand Home Page </h1>"
-                 "<p>"
-                      "These are the options publicly supported by this server"
-                 "</p>"
+                 "<h2> MackieLand Home Page </h2>"
                  "<h2> Status </h2>"
                       "<ul>"
                           "<li> light 1: %s</li>"  //arg 1
                           "<li> light 2: %s</li>"  //arg 2
                           "<li> Direction: %s </li>" //arg 3
                       "</ul>"
-                 "<h2> Commands </h2>"
-                 "<ul>"
-                      "<li> <a href=\"/\"> No operation </a> <p/> </li>"
-                      "<li> <a href=\"/light/1/on\"> Turn light 1 on <p/> </a> </li>"
-                      "<li> <a href=\"/light/1/off\"> Turn light 1 off <p/> </a> </li>"
-                      "<li> <a href=\"/light/2/on\"> Turn light 2 on <br/> </a> </li>"
-                      "<li> <a href=\"/light/2/off\"> Turn light 2 off <p/> </a> </li>"
-                      "<li> <a href=\"/left\"> Rotate counterclockwise <p/> </a> </li>"
-                      "<li> <a href=\"/straight\"> Go straight </a> <p/> </li>"
-                      "<li> <a href=\"/right\"> Rotate clockwise </a> <p/> </li>"
-                 "</ul>"
+                 "<h2 align=\"center\"> Commands </h2>"
+                 "<p align=\"center\">"
+                      " <a href=\"/\"> Status </a>  "
+                 "</p>"
+                 "<table align=\"center\" style=\"width:100%\">"
+                      "<tr> <td> - </td></tr>"
+                      "<tr>" 
+                           "<td>Light 1</td>"
+                           "<td><a href=\"/light/1/on\"> ON </a> </td>"
+                           "<td><a href=\"/light/1/off\"> OFF </a> </td>"
+                      "</tr>"
+                      "<tr> <td> - </td></tr>"
+                      "<tr>" 
+                           "<td>Light 2</td>"
+                           "<td><a href=\"/light/2/on\"> ON </a> </td>"
+                           "<td><a href=\"/light/2/off\"> OFF </a> </td>"
+                      "</tr>"
+                 "</table>"
+                 "<table align=\"center\" style=\"width:100%\">"
+                      "<tr> <td> - </td></tr>"
+                      "<tr>"
+                           "<td> Servo </td>"
+                           "<td> <a href=\"/left\"> counterclockwise </a> </td>"
+                           "<td> <a href=\"/straight\"> Go straight </a>  </td>"
+                           "<td> <a href=\"/right\"> Rotate clockwise </a> </td>"
+                      "</tr>"
+                 "</table>"
               "</body>"
            "</html>";
 
@@ -111,13 +124,13 @@ void turnOff_2() {
 void handleLeft() {
   direction_status = status_left;
   server.send(200, "text/html", thePage());
-  myservo.write(10);
+  myservo.write(180);
 }
 
 void handleRight() {
   direction_status = status_right;
   server.send(200, "text/html", thePage());
-  myservo.write(170);
+  myservo.write(0);
 }
 
 void handleStraight() {
@@ -149,7 +162,9 @@ void setup() {
 	Serial.println("HTTP server started");
 
    pinMode(LIGHT_1, OUTPUT);     // Initialize GPIO2 pin as an output
+   digitalWrite(LIGHT_1, HIGH);
    pinMode(LIGHT_2, OUTPUT);     // Initialize GPIO2 pin as an output
+   digitalWrite(LIGHT_2, HIGH);
    myservo.attach(SERVO_1);  // attaches the servo on D1 to the servo object 
    thePage();
    int len = strlen(buffer);
