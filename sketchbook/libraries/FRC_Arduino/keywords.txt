@@ -1,0 +1,45 @@
+#######################################
+# Syntax Coloring Map for FRC_Arduino
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+FRC_PWMSpeedConroller	KEYWORD1
+ContinuousServoMotorDriver	KEYWORD1
+FRC_Servo	KEYWORD1
+FRC_AnalogInput	KEYWORD1
+FRC_DigitalInput	KEYWORD1
+DigitalOutput	KEYWORD1
+FRC_Ultrasonic	KEYWORD1
+Units	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+set	KEYWORD2
+getInverted	KEYWORD2
+setInverted	KEYWORD2
+getRawSpeed	KEYWORD2
+getValue	KEYWORD2
+getVoltage	KEYWORD2
+setThreshold	KEYWORD2
+isOk	KEYWORD2
+ping	KEYWORD2
+isRangeValid	KEYWORD2
+getRangeInches	KEYWORD2
+getRangeMM	KEYWORD2
+setDistanceUnits	KEYWORD2
+setAngle	KEYWORD2
+getAngle	KEYWORD2
+getRawAngle	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+kInches	LITERAL1
+kMillimeters	LITERAL1
