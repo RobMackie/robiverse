@@ -15,26 +15,44 @@ Speed speed_state = LAST_STATE;
 void setup() {
   Serial.begin(115200);
   Serial.println("Interfacfing arduino with nodemcu");
-//  sw.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   sw.begin(115200);
   sw.setTimeout(500);
 }
+
+
+/* 
+ *  getDriverStationInputNB
+ *  returns an ascii character
+ *  
+ *  Each time this is called it gathers 1 ascii keystroke that was sent from the driver's station
+ *  OR
+ *  it return a char == '\0' which means there was no keystroke available from the driver's station
+ *  The driver's station only sends when the keyboard provides a new keystroke
+ *  There is no encoding for non-ascii keys
+ */
+
+char getDriverStationInputNB() {
+  char bfr[10];
+  memset(bfr,0, 101);
+  if (sw.available() > 0) {
+    sw.readBytesUntil( '\n',bfr,100);
+  }
+  return bfr[0];
+}
+
  
 void loop() {
-  
-  if (sw.available() > 0) {
-    char bfr[101];
-    memset(bfr,0, 101);
-    sw.readBytesUntil( '\n',bfr,100);
-    if(bfr[0] == 'F') {
+    char input = getDriverStationInputNB();
+    if(input == 'F') {
       speed_state = FAST;
-    } else if(bfr[0] == 'S') {
+    } else if(input == 'S') {
       speed_state = SLOW;
+    } else if(input == 'H') {
+      speed_state = LAST_STATE;
     } else {
       speed_state = LAST_STATE;
     }
-  }
 
   switch (speed_state) {
     case SLOW:

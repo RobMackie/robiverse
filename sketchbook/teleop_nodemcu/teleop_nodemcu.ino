@@ -9,6 +9,8 @@ const char *password = "thereisnospoon";
 ESP8266WebServer server(80);
 char buffer[1024];
 
+WiFiServer wifiServer(15000);
+
 const char* format = 
           "<html>"
              "<head> <title> MackieLand Main Page </title> </head>"
@@ -28,14 +30,19 @@ void handleRoot() {
   server.send(200, "text/html", thePage("unchanged"));
 }
 
-void blickSpeedSlow() {
+void blinkSpeedSlow() {
   Serial.println("S");
   server.send(200, "text/html", thePage("slow"));
 }
 
-void blickSpeedFast() {
+void blinkSpeedFast() {
   Serial.println("F");
   server.send(200, "text/html", thePage("fast"));
+}
+
+void blinkSpeedHyper() {
+  Serial.println("H");
+  server.send(200, "text/html", thePage("hyper"));
 }
 
 void setup() {
@@ -51,14 +58,34 @@ void setup() {
 
   // server pages setup
   server.on("/", handleRoot);
-  server.on("/fast", blickSpeedFast);
-  server.on("/slow", blickSpeedSlow);
+  server.on("/fast", blinkSpeedFast);
+  server.on("/slow", blinkSpeedSlow);
+  server.on("/hyper", blinkSpeedHyper);  
   server.begin();
+  wifiServer.begin();
 
   // status
   Serial.println("HTTP server started");
 }
 
+void handleSocketClient(WiFiClient& client) {
+  while (client.connected()) {
+      while (client.available()>0) {
+        char c = client.read();
+        char buffer[2];
+        buffer[1] = 0;
+        buffer[0] = c;
+        Serial.println(buffer);
+      }
+      delay(10);
+    }
+}
+
 void loop() {
+  WiFiClient client = wifiServer.available();
+ 
+  if (client) {
+    handleSocketClient(client);
+  }
   server.handleClient();
 }
