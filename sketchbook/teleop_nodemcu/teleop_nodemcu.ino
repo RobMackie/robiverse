@@ -31,17 +31,17 @@ void handleRoot() {
 }
 
 void blinkSpeedSlow() {
-  Serial.println("S");
+  Serial.println("s");
   server.send(200, "text/html", thePage("slow"));
 }
 
 void blinkSpeedFast() {
-  Serial.println("F");
+  Serial.println("f");
   server.send(200, "text/html", thePage("fast"));
 }
 
 void blinkSpeedHyper() {
-  Serial.println("H");
+  Serial.println("h");
   server.send(200, "text/html", thePage("hyper"));
 }
 
