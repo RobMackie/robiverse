@@ -138,6 +138,4 @@ void loop() {
 
     service_blink(speed_state);
     drivetrain(current_direction);
-    //left_motor.write(180);
-    //right_motor.write(180);
 }
