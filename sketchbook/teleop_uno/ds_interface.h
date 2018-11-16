@@ -1,3 +1,7 @@
+
+#ifndef __DS_INTERFACE__
+#define __DS_INTERFACE__
+
 #include <SoftwareSerial.h>
 
 class DS_Interface : public SoftwareSerial {
@@ -23,3 +27,5 @@ class DS_Interface : public SoftwareSerial {
         char bfr[10];
 
 };
+
+#endif
