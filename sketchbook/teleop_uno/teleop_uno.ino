@@ -62,25 +62,25 @@ void init_motors(int left, int right) {
 #define  BACK    5
 #define  STOP    6
 
-int current_direction = FORWARD;
+int current_direction = STOP;
 
 void drivetrain(int dir) {
   switch(dir) {
     case FORWARD:
-      left_motor.write(180);
-      right_motor.write(0);
-      break;
-    case REVERSE:
       left_motor.write(0);
       right_motor.write(180);
       break;
+    case REVERSE:
+     left_motor.write(180);
+      right_motor.write(0);
+      break;
     case LEFT:
-      left_motor.write(90);
+      left_motor.write(180);
       right_motor.write(180);
       break;
     case RIGHT:
-      left_motor.write(180);
-      right_motor.write(90);
+      left_motor.write(0);
+      right_motor.write(0);
       break;
     case STOP:
       left_motor.write(90);
@@ -120,10 +120,10 @@ void loop() {
         current_direction = FORWARD;
         break;
       case 'a':
-        current_direction = LEFT;
+        current_direction = RIGHT;
         break;
       case 'd':
-        current_direction = RIGHT;
+        current_direction = LEFT;
         break;
       case 's':
         current_direction = STOP;
