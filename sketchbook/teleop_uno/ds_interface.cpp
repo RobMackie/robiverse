@@ -37,13 +37,3 @@ void DS_Interface::init()
     this->setTimeout(SERIAL_TIMEOUT);
 }
 
-char DS_Interface::readInputIfAvailable() 
-{
-  char buffer[BUFFER_SIZE];
-  memset(buffer, 0, BUFFER_SIZE);
-  if (this->available() > 0) {
-    this->readBytesUntil( '\n', buffer, BUFFER_SIZE);
-  }
-  return buffer[0];
-}
-
