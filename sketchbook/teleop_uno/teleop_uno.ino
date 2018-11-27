@@ -3,6 +3,7 @@
 #include "ds_interface.h"
 #include "Blinker.h"
 #include "ServoDriveTrain.h"
+#include "HbridgeDriveTrain.h"
 
 #define RX_FROM_NMCU 2
 #define TX_TO_NMCU 3
@@ -39,11 +40,13 @@ const int LEFT_MOTOR = 5;
 const int RIGHT_MOTOR = 6;
 
 ServoDriveTrain drivetrain(LEFT_MOTOR, RIGHT_MOTOR);
+// HbridgeDriveTrain drivetrain;
 
 /*
  * Let’s start with the wheels still so it doesn’t run away
  */
 ServoDriveTrain::Direction current_direction =  ServoDriveTrain::STOP;
+// HbridgeDriveTrain::Direction current_direction =  HbridgeDriveTrain::STOP;
 
 /* 
  * Arduino Setup where we initialize subsystems

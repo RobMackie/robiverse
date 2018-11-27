@@ -1,5 +1,6 @@
 #include "ServoDriveTrain.h"
 
+#include <math.h>
 
 /*
  * Name the servo speeds for full speed forward and REVERSE
@@ -63,22 +64,78 @@ void ServoDriveTrain::service(ServoDriveTrain::Direction wayToGo) {
         case FORWARD:
             left_motor.write(SERVO_FWD_L);
             right_motor.write(SERVO_FWD_R);
+            current_direction = wayToGo;
             break;
         case REVERSE:
             left_motor.write(SERVO_REV_L);
             right_motor.write(SERVO_REV_R);
+            current_direction = wayToGo;
             break;
         case LEFT:
             left_motor.write(SERVO_REV_L);
             right_motor.write(SERVO_FWD_R);
+            current_direction = wayToGo;
             break;
         case RIGHT:
             left_motor.write(SERVO_FWD_L);
             right_motor.write(SERVO_REV_R);
+            current_direction = wayToGo;
             break;
         case STOP:
             left_motor.write(SERVO_STOP);
             right_motor.write(SERVO_STOP);
+            current_direction = wayToGo;
             break;
     }
+}
+
+#define MAX_SPEED_OFFSET 90 // max speed is either 180 or 0 both 90 away from "stop"
+
+int compute_servo_angle(float input) {
+    if (fabs(input) > 1) {
+        input = (input > 0 ? 1.0 : -1.0);
+    }
+    /* how to think about this
+     * the input is a number between -1.0 and 1.0. 
+     * i.e. the input is a fraction with an absolute value lower than 1.
+     * The offset from 90 (stopped) we need must be some fraction of 
+     * 90 (since we can only go 90 away from stopped max speeds are 0 and 180).
+     * If we multiply a fraction of 1 times 90, we'll get a number between
+     * 0 and 90 with a sign that means if we add it to 90, it'll be that much
+     * below or above 90, which makes it the number we need.
+     */
+    int speed = input * MAX_SPEED_OFFSET + SERVO_STOP;
+    return (speed);
+}
+
+/*
+ * setMotorsDirectly is a way to have direct control of each motor's speed
+ */
+void ServoDriveTrain::setMotorsDirectly(float left_speed, float right_speed) {
+    // computer angle value between 0 and 180 for each servo
+    /*
+     * we invert the left result because we invert the left wheel everywhere
+     */
+    int left_angle = compute_servo_angle(left_speed);
+    left_angle = left_angle * (-1);
+
+    int right_angle = compute_servo_angle(right_speed);
+
+    if (left_speed > right_speed) {
+        current_direction = ServoDriveTrain::RIGHT;
+    } else if (right_speed > left_speed) {
+        current_direction = ServoDriveTrain::LEFT;
+    } if (left_speed > 0.0) {
+        current_direction = ServoDriveTrain::FORWARD;
+    } if (left_speed < 0.0) {
+        current_direction = ServoDriveTrain::REVERSE;
+    } else {
+        current_direction = ServoDriveTrain::STOP;
+    }
+    left_motor.write(-1 * left_angle); 
+    right_motor.write(right_angle);
+}
+
+ServoDriveTrain::Direction ServoDriveTrain::getCurrentDirection() {
+    return (current_direction);
 }

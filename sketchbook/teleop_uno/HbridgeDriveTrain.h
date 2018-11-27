@@ -1,10 +1,9 @@
-#ifndef SERVO_DRIVE_TRAIN_H_INCLUDED
-#define SERVO_DRIVE_TRAIN_H_INCLUDED
+#ifndef HBRIDGE_DRIVE_TRAIN_H_INCLUDED
+#define HBRIDGE_DRIVE_TRAIN_H_INCLUDED
 
-#include <Servo.h>
+#include "Arduino.h"
 
-
-class ServoDriveTrain {
+class HbridgeDriveTrain {
     public:
         /*
         * Define some words for directions, so we don’t have to remember arbitrary 
@@ -18,12 +17,12 @@ class ServoDriveTrain {
          * This class assumes 2 continuous rotation servos, one on the left
          * and one on the right side of the robot. 
          */
-        ServoDriveTrain(int leftPin, int rightPin);
+        HbridgeDriveTrain();
 
         /*
          * A clean up function for when the object is destroyed
          */
-        virtual ~ServoDriveTrain();
+        virtual ~HbridgeDriveTrain();
 
         /* 
          * Call this function from the arduino "setup()" function.
@@ -40,7 +39,7 @@ class ServoDriveTrain {
          * do no harm, but no need to do so until you want something 
          * to change.
          */
-        void service(ServoDriveTrain::Direction goThisWay);
+        void service(HbridgeDriveTrain::Direction goThisWay);
 
         /*
          * This lets you set direction and speed of each wheel directly.
@@ -64,14 +63,18 @@ class ServoDriveTrain {
         Direction getCurrentDirection();
 
     private:
+        struct Motor {
+            int speed_pin;
+            int direction_pin;
+        };
+
+        Motor left_motor;
+        Motor right_motor;
+
         Direction current_direction;
-        int right_motor_pin;
-        int left_motor_pin;
 
-        Servo left_motor;
-        Servo right_motor;
-
+        void move_motor(HbridgeDriveTrain::Motor &motor, int direction, int pwr);
 };
 
 
-#endif // SERVO_DRIVE_TRAIN_H_INCLUDED
+#endif // HBRIDGE_DRIVE_TRAIN_H_INCLUDED
