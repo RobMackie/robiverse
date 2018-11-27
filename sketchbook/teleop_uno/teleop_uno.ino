@@ -2,6 +2,7 @@
 #include <Servo.h>
 #include "ds_interface.h"
 #include "Blinker.h"
+#include "ServoDriveTrain.h"
 
 #define RX_FROM_NMCU 2
 #define TX_TO_NMCU 3
@@ -29,73 +30,20 @@ Blinker::Speed_t speed_state = Blinker::HYPER;
  */
 
 /*
- * servos on digital pins 5 & 6
+ * Name the digital pins 5 & 6 for the motors/servos they represent, then create
+ * an object of type ServoDriveTrain to control our servos as motors. If we use
+ * the H-Bridge Shield for the gear boxes, we'll need to use a different type 
+ * of drive train object.
  */
 const int LEFT_MOTOR = 5;
 const int RIGHT_MOTOR = 6;
 
-/*
- * Instantiate objects to control the two motors
- */
-Servo left_motor;
-Servo right_motor;
-
-/*
- * Call from “init()” to connect the servo objects to their 
- * pins
- */
-void init_drivetrain(int left_motor_pin, int right_motor_pin) {
-  left_motor.attach(left_motor_pin);
-  right_motor.attach(right_motor_pin);
-}
-
-/*
- * Define some words so we don’t have to remember arbitrary numbers
- */
-#define  FORWARD 1
-#define  REVERSE 2
-#define  LEFT    3
-#define  RIGHT   4
-#define  BACK    5
-#define  STOP    6
+ServoDriveTrain drivetrain(LEFT_MOTOR, RIGHT_MOTOR);
 
 /*
  * Let’s start with the wheels still so it doesn’t run away
  */
-int current_direction = STOP;
-
-/*
- * Call this function from “loop()” with a direction. A good plan is 
- * to remember a direction and use it over and over, unless you get 
- * a new keystroke. The directions are the words defined above, 
- * including the ‘STOP’ direction. Everytime you call this, the 
- * code will set the motors to go in the direction needed to
- * implement that direction and leave them running that way
- */
-void service_drivetrain(int dir) {
-  switch(dir) {
-    case FORWARD:
-      left_motor.write(0); // forward
-      right_motor.write(180); // forward
-      break;
-    case REVERSE:
-      left_motor.write(180); // backward
-      right_motor.write(0);  // backward
-      break;
-    case LEFT:
-      left_motor.write(180);  //backward
-      right_motor.write(180); //forward
-      break;
-    case RIGHT:
-      left_motor.write(0);  // forward
-      right_motor.write(0); // backward
-      break;
-    case STOP:
-      left_motor.write(90);  // stop
-      right_motor.write(90); // stop
-      break;
-  }
-}
+ServoDriveTrain::Direction current_direction =  ServoDriveTrain::STOP;
 
 /* 
  * Arduino Setup where we initialize subsystems
@@ -105,8 +53,7 @@ void setup() {
   Serial.println("Interfacing arduino with nodemcu");
   ds.init();     // setup drive station comms 
   flashyLight.init(); // setup the LED blinker
-
-  init_drivetrain(LEFT_MOTOR, RIGHT_MOTOR); // setup the drivetrain
+  drivetrain.init();  // setup the drive train to use the servos
 }
 
 /* 
@@ -132,19 +79,19 @@ void loop() {
         speed_state = Blinker::SUPERHYPER;
         break;
       case 'w':
-        current_direction = FORWARD;
+        current_direction = ServoDriveTrain::FORWARD;
         break;
       case 'a':
-        current_direction = RIGHT;
+        current_direction = ServoDriveTrain::RIGHT;
         break;
       case 'd':
-        current_direction = LEFT;
+        current_direction = ServoDriveTrain::LEFT;
         break;
       case 's':
-        current_direction = STOP;
+        current_direction = ServoDriveTrain::STOP;
         break;
       case 'x':
-        current_direction = REVERSE;
+        current_direction = ServoDriveTrain::REVERSE;
         break;
       default:
         /*
@@ -156,6 +103,6 @@ void loop() {
     }
 
     flashyLight.service(speed_state);
-    service_drivetrain(current_direction);
+    drivetrain.service(current_direction);
 }
 
