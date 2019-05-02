@@ -34,7 +34,7 @@ module string(word, word_size, extrude_mm) {
 }
 
 
-$2d = 1;
+$2d = 0;
 if ($2d) {
     projection(cut=true) {
        translate([0,0,0]) rotate([0,0,0]) {

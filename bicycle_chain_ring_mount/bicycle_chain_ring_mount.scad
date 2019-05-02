@@ -22,14 +22,14 @@ module make_parts() {
                 for ( i = [0 : 4] ){
                     rotate( i * 72, [0, 0, 1])
                     translate([0, $p_circumrad, 0])
-                    cylinder(r=4, h=10);
+                    cylinder(r=4.9, h=10); // 3/8"
                 }
             }
             translate([0,0,-1]) {
                 for ( i = [0 : 3] ){
                     rotate( i * 90, [0, 0, 1])
                     translate([0, $mount_hole_offset, 0])
-                    cylinder(r=3.5, h=10);
+                    cylinder(r=3.3, h=10); // 1/4"
                 }
             }
         }
