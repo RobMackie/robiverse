@@ -7,6 +7,7 @@ $height = 60;
 $thick = mm(1/8);
 
 $fn=16;
+$filet=5;
 
 // Utility functions
 module longside() {
@@ -44,6 +45,32 @@ module shortside() {
             }
         }  
     }      
+}
+module vertical_disk_x(rv,hv) {
+    translate([rv,hv,rv]) {
+        rotate([90,0,0]) {
+            cylinder(r=rv, h=hv, $fn=64);
+        }
+    }
+}
+
+module wing() {
+    union() {
+        translate([0,0,0]) {
+            cube([$width/3, $thick, $height]);
+        }
+        hull() {
+            translate([$width,0,0]) {
+                vertical_disk_x(rv=$filet, hv=$thick);
+            }
+            translate([1/3*$width-$filet,0,$height-2*$filet]) {
+                vertical_disk_x(rv=$filet, hv=$thick);
+            }
+            translate([1/3*$width-$filet,0,0]) {
+                vertical_disk_x(rv=$filet, hv=$thick);
+            }            
+        }
+    }
 }
 
 // Part functions
@@ -120,6 +147,39 @@ module pc_back_fill() {
     }
 }
 
+
+module pc_front_wings() {
+    translate([0,-$thick,0]) {
+        //front side wings
+        union() {
+            translate([$width,0,0]) {        
+                wing();
+            }
+            pc_front_short();
+            translate([$thick,$thick,0]) {
+                rotate([0,0,180]) {
+                    wing();
+                }
+            }
+        }
+    }
+}
+
+module pc_back_wings() {
+   union() {
+        translate([$width,2*$thick + $length,0]) {        
+            wing();
+        }
+        translate([$thick, 2*$thick + $length, 0]) {
+            shortside();
+        }
+        translate([$thick,3*$thick + $length,0]) {
+            rotate([0,0,180]) {
+                wing();
+            }
+        }
+    }    
+}
 // Assembly functions
 module assembly_built() {
    pc_left_long();
@@ -128,6 +188,8 @@ module assembly_built() {
    pc_right_long();
    pc_back_short();
    pc_back_fill(); 
+   pc_front_wings();
+   pc_back_wings();
 }
 
 module assembly_flat() {
@@ -138,21 +200,19 @@ module assembly_flat() {
         }
     }
     
-    
     translate([2*$height+$space,0,-$width-($thick)]) {
         rotate([0,-90,0]) {
                pc_right_long();
         }
     }
     
-    //translate([3*$height+2*$space,0,$thick]) {
-    translate([2*$height+$space,0,$thick]) {    
+    translate([-$thick,$length+5*$space,$thick]) {    
         rotate([-90,0,0]) {
             pc_front_short();
         }
     }    
     
-    translate([2*$height+$space,$height+$space,2*$thick]) {
+    translate([$width+$space,$length+5*$space,2*$thick]) {
         rotate([-90,0,0]) {
             translate([0,-$length,0]) {
                 pc_back_short();
@@ -160,7 +220,7 @@ module assembly_flat() {
         }
     }
     
-    translate([2*$height+3.5*$space,3*$height+2*$space,0]) {
+    translate([0,$length+2*$height+6*$space,0]) {
         rotate([90,0,0]) {
             translate([-$thick-$thick/2,-$thick,0]) {
                 pc_front_fill();
@@ -168,29 +228,41 @@ module assembly_flat() {
         }
     }
 
-    translate([2*$height+$space+2.5*$space,4*$height+3*$space,0]) {
+    translate([$width+2*$space,$length+2*$height+6*$space,0]) {
         rotate([90,0,0]) {
             translate([-$thick-$thick/2,-$length,0]) {
                 pc_back_fill();
             }
         }
     }
-
-    translate([0,0,0]) {
-        rotate([0,0,0]) {
-            
+    translate([2*$height+$filet+$space, $width+2*$filet, $thick]) {
+        rotate([90,0,90]) {
+            pc_front_wings();
         }
-    }    
-    
-    
+    }
+   
+    translate([3*$height+2*$filet+ 2*$space, 0,0]) {
+        rotate([90,0,90]) {
+            translate([$width+2*$filet,-$length+-2*$thick,0]) {
+                pc_back_wings();
+            }
+        }
+    }     
 }
 
-
-//$built = 1;
 $built = 0;
+$2d = 1;
 
 if ($built) {
     assembly_built();
 } else {
-    assembly_flat();
+    if ($2d) {
+        projection(cut=true) {
+            translate([0,0,-1]) rotate([0,0,0]) {
+                assembly_flat();
+            }
+        }
+    } else {
+        assembly_flat();
+    }
 }
