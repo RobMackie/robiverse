@@ -242,7 +242,7 @@ module assembly_flat() {
                pc_right_long();
         }
     }
-    /*
+    
     translate([-$thick,$length+5*$space,$thick]) {    
         rotate([-90,0,0]) {
             pc_front_short();
@@ -286,10 +286,10 @@ module assembly_flat() {
             }
         }
     }
-    */
+    
 }
 
-$built = 1;
+$built = 0;
 $2d = 0;
 
 if ($built) {
