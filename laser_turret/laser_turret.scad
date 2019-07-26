@@ -1,8 +1,4 @@
-module base_stand() {
-}
-
-
-module servo_model() {
+// a laser turrent using 2 servos
     $serv_h = 43;
     $serv_l = 40;
     $serv_w = 19;
@@ -15,7 +11,8 @@ module servo_model() {
     $spline_h = 3;
     $horn_d = 30;
     $horn_h = 3;
-    
+
+module servo_model() {
     union() {
         // this difference it the tab plate
         difference() {
@@ -45,6 +42,27 @@ module servo_model() {
     
 }
 
+module base_stand() {
+    $bs_l = 100;
+    $bs_w = 90;
+    $bs_h = 4;
+    $bs_wall = 3;
+    $bs_out_l = $serv_l+$bs_wall*2;
+    $bs_out_w = $serv_w+$bs_wall*2;
+    $bs_wall_h = 9;
+    $bs_floor = 1;
+    union() {
+        cube([$bs_l,$bs_w,$bs_h]);
+        translate([($bs_l-$bs_out_l)/2+0.1*$bs_l,($bs_w-$bs_out_w)/2,$bs_h]) {
+            difference() {
+                cube([$bs_out_l, $bs_out_w, 9]);
+                translate([$bs_wall,$bs_wall,1]) {
+                    cube([$serv_l,$serv_w,$bs_wall_h+1]);
+                }
+            }
+        }
+    }
+}
 
 module upper_landing() {
     
@@ -66,7 +84,7 @@ module assembled_unit() {
     }
     translate([0,0,0]) {
         rotate([0,0,0]) {
-            servo_model();
+            // servo_model();
         }
     }
     translate([0,0,0]) {
@@ -76,7 +94,7 @@ module assembled_unit() {
     }
     translate([0,0,0]) {
         rotate([0,0,0]) {
-            servo_model();
+            //servo_model();
         }
     }    
     translate([0,0,0]) {
