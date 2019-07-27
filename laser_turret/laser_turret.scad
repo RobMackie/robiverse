@@ -59,31 +59,42 @@ module servo_model() {
     
 }
 
+module leg() {
+    difference() {
+        cube([10,10,$bs_leg_l]);
+        translate([5,5,0]) {
+            cylinder(d=2.9, h=10);
+        }
+    }
+}
+
 module base_stand() {
     difference() {
         union() {
             cube([$bs_l,$bs_w,$bs_h]);
+            /*
             translate([0,0,-40]) {
                 cube([$bs_l,$bs_w,$bs_h]);
             }
+            */
             translate([($bs_l-$bs_out_l)/2,($bs_w-$bs_out_w)/2,-$bs_h*4]) {
                     cube([$bs_out_l, $bs_out_w, $bs_wall_h*2]);
                 }
             // leg 1
             translate([0,0,-$bs_leg_l]) {
-                cube([10,10,$bs_leg_l]);
+                leg();
             }
             // leg 2
             translate([0,$bs_w-10,-$bs_leg_l]) {
-                cube([10,10,$bs_leg_l]);
+                leg();
             }
             // leg 3
             translate([$bs_w-10,$bs_w-10,-$bs_leg_l]) {
-                cube([10,10,$bs_leg_l]);
+                leg();
             }
             // leg 4
             translate([$bs_w-10,0,-$bs_leg_l]) {
-                cube([10,10,$bs_leg_l]);
+                leg();
             }            
         }
         translate([($bs_l-$bs_out_l)/2+$bs_wall,($bs_w-$bs_out_w)/2+$bs_wall,-$bs_h-13]) {
