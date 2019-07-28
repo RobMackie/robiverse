@@ -1,17 +1,18 @@
 // a laser turrent using 2 servos
 
+$fn = 32;
   // serv - servo
     $serv_h = 43;
-    $serv_l = 40;
-    $serv_w = 19;
+    $serv_l = 40.2;
+    $serv_w = 20.2;
     $tab_drop = 4;
-    $tab_l = 8;
-    $tab_hole_d = 8;
+    $tab_l = 7;
+    $tab_hole_d = 4;
     $tab_h = 3;
-    $tab_offset = 3.5;
-    $spline_d = 4;
+    $tab_offset = 1.5;
+    $spline_d = 6;
     $spline_h = 3;
-    $horn_d = 30;
+    $horn_d = 21;
     $horn_h = 3;
     
   // bs - base stand
@@ -36,12 +37,20 @@ module servo_model() {
             translate([0,0,$serv_h-$tab_h-$tab_drop]) {
                 cube([$serv_l+2*$tab_l, $serv_w, $tab_h]);
             }
-            translate([$tab_offset,$serv_w/2,$serv_h - ($tab_h + 1)-$tab_drop]) {
+            // close plate holes
+            translate([$tab_offset,$serv_w/4,$serv_h - ($tab_h + 1)-$tab_drop]) {
                 cylinder(d=$tab_hole_d, h=$tab_h+2);
             }
-            translate([$serv_l+2*$tab_l-$tab_offset,$serv_w/2,$serv_h - ($tab_h + 1)-$tab_drop]) {
+            translate([$tab_offset,$serv_w*3/4,$serv_h - ($tab_h + 1)-$tab_drop]) {
+                cylinder(d=$tab_hole_d, h=$tab_h+2);
+            } 
+           // far plate holes
+            translate([$serv_l+2*$tab_l-$tab_offset,$serv_w/4,$serv_h - ($tab_h + 1)-$tab_drop]) {
                 cylinder(d=$tab_hole_d, h=$tab_h+2);
             }
+            translate([$serv_l+2*$tab_l-$tab_offset,$serv_w*3/4,$serv_h - ($tab_h + 1)-$tab_drop]) {
+                cylinder(d=$tab_hole_d, h=$tab_h+2);
+            }            
         }
         // this is the body of the servo
         translate([$tab_l,0,0]) {
@@ -139,13 +148,13 @@ module laser_mount() {
                     }
                 }
             }
-            translate([70/2,$horn_h,$horn_d/3]) {
+            translate([70/2,$horn_h,$horn_d/2]) {
                 rotate([90,0,0]) {
                     cylinder(d=$horn_d*1.5, h=$horn_h*2);
                 }
             }
         }
-        translate([70/2,0,$horn_d/3]) {
+        translate([70/2,0,$horn_d/2]) {
             rotate([90,0,0]) {
                 cylinder(d=$horn_d, h=$horn_h+1);
             }
@@ -177,22 +186,22 @@ module assembled_unit() {
             color("red") servo_model();
         }
     }
-    translate([$bs_l/2,$bs_w/2,58]) { //51
+    translate([$bs_l/2,$bs_w/2,55]) { //51
         rotate([0,0,0]) {
             upper_landing();
         }
     }
-    translate([65,-10,130]) {
+    translate([65,-10,127]) {
         rotate([-90,90,0]) {
           color("red") servo_model();
         }
     }    
-    translate([20,40,92]) {
+    translate([20,40,89]) {
         rotate([0,0,0]) {
             laser_mount();
         }
     }
-    translate([0,55,102]) {
+    translate([0,55,99]) {
         rotate([0,0,0]) {
            laser();
         }
