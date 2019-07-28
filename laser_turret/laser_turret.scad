@@ -112,12 +112,15 @@ module base_stand() {
     }
 }
 
+$ul_low_w = 60;
+$ul_wall_thick=10;
+$ul_wall_h = 80;
 module upper_landing() {
     union() {
         // disk with hollow for horn
         difference() {
             translate([-$serv_w,-$bs_l/3,0]) {
-                cube([$serv_w*2, 60, $ul_h]);
+                cube([$serv_w*2, $ul_low_w, $ul_h]);
             }
             translate([0,0,0]) {
                 cylinder(d=$horn_d, h=$horn_h);
@@ -126,7 +129,7 @@ module upper_landing() {
         // wall to mount servo
         difference() {
             translate([-($serv_w),-39,0]) {
-                cube([$serv_w*2,10,80]);
+                cube([$serv_w*2,$ul_wall_thick,$ul_wall_h]);
             }
             translate([10,-65,72]) {
                 rotate([-90,90,0]) {
@@ -215,11 +218,31 @@ module assembled_unit() {
 }
 
 module flat_pack_parts() {
-    
+/*
+    translate([0,0,0]) {
+        rotate([0,0,0]) {
+        }
+    }
+*/
+    translate([$bs_l,0,$bs_h]) {
+        rotate([0,180,0]) {
+            base_stand();
+        }
+    }
+    translate([30,$ul_wall_h+$ul_d,$ul_low_w/2+$ul_wall_thick]) {
+        rotate([90,0,0]) {
+            upper_landing();
+        }
+    }  
+    translate([90,$bs_l*1.2,15]) {
+        rotate([-90,0,90]) {
+            laser_mount();
+        }
+    }    
     
 }
 
-
+$flat_pack=1;
 if ($flat_pack) {
     translate([0,0,0]) {
         flat_pack_parts();
