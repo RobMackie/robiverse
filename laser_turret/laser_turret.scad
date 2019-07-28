@@ -63,7 +63,13 @@ module servo_model() {
         // this is the servo horn (round)
         translate([$tab_l+$serv_l/2,$serv_w/2,$serv_h+$spline_h]) {
             cylinder(d=$horn_d, h=$horn_h, $fn=32);
-        }        
+        }   
+        // wire channel
+        translate([$serv_l + 6.9,$serv_w/2-7/2,0]) {
+            rotate([0,0,0]) {
+                cube([10,7,40]);
+            }
+        }
     }
     
 }
@@ -106,8 +112,11 @@ module base_stand() {
                 leg();
             }            
         }
-        translate([($bs_l-$bs_out_l)/2+$bs_wall,($bs_w-$bs_out_w)/2+$bs_wall,-$bs_h-13]) {
-            cube([$serv_l,$serv_w,$bs_wall_h*2+2+5]);
+        translate([($bs_l-$bs_out_l)/2-$bs_wall-1.5,($bs_w-$bs_out_w)/2+$bs_wall,-$bs_h-13]) {
+            rotate([0,0,0]) {
+                servo_model();
+            }
+           // cube([$serv_l,$serv_w,$bs_wall_h*2+2+5]);
         }
     }
 }
@@ -242,7 +251,7 @@ module flat_pack_parts() {
     
 }
 
-$flat_pack=1;
+$flat_pack=0;
 if ($flat_pack) {
     translate([0,0,0]) {
         flat_pack_parts();
