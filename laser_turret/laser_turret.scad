@@ -3,8 +3,8 @@
 $fn = 32;
   // serv - servo
     $serv_h = 43;
-    $serv_l = 40.2;
-    $serv_w = 20.2;
+    $serv_l = 41.2;
+    $serv_w = 20.8;
     $tab_drop = 4;
     $tab_l = 7;
     $tab_hole_d = 4;
@@ -74,11 +74,12 @@ module servo_model() {
     
 }
 
+$leg_w = 20;
 module leg() {
     difference() {
-        cube([10,10,$bs_leg_l]);
-        translate([5,5,0]) {
-            cylinder(d=2.9, h=10);
+        cube([$leg_w,$leg_w,$bs_leg_l]);
+        translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+            cylinder(d=2.9, h=$bs_leg_l*3);
         }
     }
 }
@@ -98,20 +99,47 @@ module base_stand() {
             // leg 1
             translate([0,0,-$bs_leg_l]) {
                 leg();
+                translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+                    cylinder(d=2.9, h=$bs_leg_l*3);
+                }
             }
             // leg 2
-            translate([0,$bs_w-10,-$bs_leg_l]) {
+            translate([0,$bs_w-$leg_w,-$bs_leg_l]) {
                 leg();
             }
             // leg 3
-            translate([$bs_w-10,$bs_w-10,-$bs_leg_l]) {
+            translate([$bs_w-$leg_w,$bs_w-$leg_w,-$bs_leg_l]) {
                 leg();
             }
             // leg 4
-            translate([$bs_w-10,0,-$bs_leg_l]) {
+            translate([$bs_w-$leg_w,0,-$bs_leg_l]) {
                 leg();
             }            
         }
+        // leg 1 hole
+        translate([0,0,-$bs_leg_l]) {
+            translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+                cylinder(d=2.9, h=$bs_leg_l*3);
+            }
+        }   
+        // leg 2 hole
+        translate([0,$bs_w-$leg_w,-$bs_leg_l]) {
+            translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+                cylinder(d=2.9, h=$bs_leg_l*3);
+            }
+        }  
+        // leg 3 hole 
+        translate([$bs_w-$leg_w,$bs_w-$leg_w,-$bs_leg_l]) {
+            translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+                cylinder(d=2.9, h=$bs_leg_l*3);
+            }
+        }
+        // leg 4
+        translate([$bs_w-$leg_w,0,-$bs_leg_l]) {
+            translate([$leg_w/2,$leg_w/2,-$bs_leg_l+2]) {
+                cylinder(d=2.9, h=$bs_leg_l*3);
+            }
+        }         
         translate([($bs_l-$bs_out_l)/2-$bs_wall-1.5,($bs_w-$bs_out_w)/2+$bs_wall,-$bs_h-13]) {
             rotate([0,0,0]) {
                 servo_model();
@@ -174,6 +202,41 @@ module laser_mount() {
     }
 }
 
+module laser_mount_alt() { 
+    difference() {
+        
+        union() {
+            difference() {
+                // main body with disk
+                translate([20,0,0.5]) {
+                    cube([30,15,20]);
+                } 
+                translate([-1,9,10.5]) {
+                    rotate([0,90,0]) {
+                        cylinder(d=6.1, h=80, $fn=64);
+                    }
+                }
+            }
+            // socket subtracted
+            translate([70/2,$horn_h,$horn_d/2]) {
+                rotate([90,0,0]) {
+                    cylinder(d=$horn_d*1.5, h=$horn_h*2, $fn=64);
+                }
+            }
+        }
+        // socket
+        translate([70/2,0,$horn_d/2]) {
+            rotate([90,0,0]) {
+                cylinder(d=$horn_d, h=$horn_h+1, $fn=64);
+            }
+        }
+        translate([20,4,-2.5]) {
+            cube([24,15,25]);
+               /* y , z, x */
+        }
+    }
+}
+
 module laser() {
     rotate([0,90,0]) {
         color("blue") cylinder(d=15, h=120);
@@ -227,34 +290,47 @@ module assembled_unit() {
 }
 
 module flat_pack_parts() {
-/*
+
     translate([0,0,0]) {
         rotate([0,0,0]) {
         }
     }
-*/
-    translate([$bs_l,0,$bs_h]) {
-        rotate([0,180,0]) {
-            base_stand();
+    if (1) {
+        translate([$bs_l,0,$bs_h]) {
+            rotate([0,180,0]) {
+                base_stand();
+            }
         }
     }
-    translate([30,$ul_wall_h+$ul_d,$ul_low_w/2+$ul_wall_thick]) {
-        rotate([90,0,0]) {
-            upper_landing();
-        }
-    }  
-    translate([90,$bs_l*1.2,15]) {
-        rotate([-90,0,90]) {
-            laser_mount();
-        }
+    if (0) {
+        translate([30,$ul_wall_h+$ul_d,$ul_low_w/2+$ul_wall_thick]) {
+            rotate([90,0,0]) {
+                upper_landing();
+            }
+        }  
+    }
+    if (0) {
+        translate([90,$bs_l*1.2,15]) {
+            rotate([-90,0,90]) {
+                laser_mount_alt();
+            }
+        } 
     }    
-    
 }
 
-$flat_pack=0;
+$flat_for_svg=0;
+$flat_pack=1;
 if ($flat_pack) {
     translate([0,0,0]) {
-        flat_pack_parts();
+        if ($flat_for_svg) {
+            projection(cut=true) {
+                translate([0,0,-1]) rotate([0,0,0]) {
+                     flat_pack_parts();
+                }
+            }
+        }else {
+            flat_pack_parts();
+        }
     }
 } else {
     translate([0,0,0]) {
