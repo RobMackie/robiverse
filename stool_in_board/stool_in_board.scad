@@ -10,11 +10,17 @@ $inch = 25.4;
 // on these numbers.
 // These numbers no long correspond to anything in the 
 // real world.
+
+$board_z = 18.65; // This is board thickness
+
 $board_x = 25 * 25.4;
 $board_y  = 30 * 25.4;
-$board_z = 3 * 25.4 / 4;
+
 $board_z_tmp = 1 / 40;
 $disk_d = 14 * 25.4;
+
+$slotted = 1;
+$not_slotted = 1;
 
 // stool outer
 module stool_leg_outer() {
@@ -84,7 +90,6 @@ module stool_leg_inner() {
 
 // stool leg top half
 module stool_leg_top() {
-    $3quarter = 3*$inch/4;
     difference() {
         stool_leg_outer();
         translate([0,0,-0.1]) {
@@ -94,15 +99,15 @@ module stool_leg_top() {
         translate([12.5*$inch, 6.5*$inch,-0.1]) {
             color("red") cylinder(d=12*$inch, h=40);
         }
-        translate([($board_x/2)-$3quarter/2,19.66*$inch,-.1]) {
-            color("red") cube([$3quarter,7.9/2*$inch,50]);
+        translate([($board_x/2)-$board_z/2,19.66*$inch,-.1]) {
+            color("red") cube([$board_z,7.9/2*$inch,50]);
         }
     }
 }    
-    
+
+   
 // stool leg bottom half
 module stool_leg_bottom() {
-    $3quarter = 3*$inch/4;
     difference() {
         stool_leg_outer();
         translate([0,0,-0.1]) {
@@ -111,11 +116,12 @@ module stool_leg_bottom() {
         translate([12.5*$inch, 6.5*$inch,-0.1]) {
             color("red") cylinder(d=12*$inch, h=40);
         }
-        translate([($board_x/2)-$3quarter/2,(19.66+7.9/2)*$inch,-.1]) {
-            color("red") cube([$3quarter,7.9/2*$inch,50]);
+        translate([($board_x/2)-$board_z/2,(19.66+7.9/2)*$inch,-.1]) {
+            color("red") cube([$board_z,7.9/2*$inch,50]);
         }
     }  
 }
+
 
 // fit in a board
 module board() {
@@ -124,7 +130,7 @@ module board() {
 
 module slotted_top () {
     $top_d = 10.8*$inch;
-    $slot_dado = 3 * $inch / 4;
+    $slot_dado = $board_z;
     $slot_len = 7 * $inch;
     difference() {
         color("red") cylinder(d=$top_d, h=40, $fn=64);
@@ -142,29 +148,42 @@ module slotted_top () {
 
 module buildit() {
     union() {
-        translate([-70,0,0]) {
-            stool_leg_top();
-            translate([980,700,0]) {
+        if ($slotted) {
+            translate([-70,0,0]) {
+                stool_leg_top();
+            }
+        }
+        if ($not_slotted) {
+            translate([910,700,0]) {
                 rotate([0,0,180]) {
                     stool_leg_bottom();
                 }
             }
         }
-        translate([75,165,0]) {
-            cube([60,5,50]);
+        if ($slotted) {
+            translate([75,165,0]) {
+                cube([60,5,50]);
+            }
         }
-        translate([370,165,0]) {
-            cube([60,5,50]);
+        if ($slotted) {
+            translate([370,165,0]) {
+                cube([60,5,50]);
+            }
         }
-        translate([415,530,0]) {
-            cube([350,5,50]);
+        if ($not_slotted) {
+            translate([415,530,0]) {
+                cube([350,5,50]);
+            }
         }
-        translate([9.80*$inch, 6.5*$inch,-0.1]) {
-            slotted_top();
+        if ($slotted) {
+            translate([9.80*$inch, 6.5*$inch,-0.1]) {
+                slotted_top();
+            }
         }
-        
-        translate([(9.9+13.4)*$inch, 21*$inch,-0.1]) {
-            color("red") cylinder(d=10.8*$inch, h=40, $fn=64);
+        if ($not_slotted) {
+            translate([(9.9+13.4)*$inch, 21*$inch,-0.1]) {
+                color("red") cylinder(d=10.8*$inch, h=40, $fn=64);
+            }
         }
 
     }
@@ -174,7 +193,7 @@ $flat_for_svg = 1;
 
 /*
 translate([160,700,0]) {
-    cube([6.9*$inch,3*$inch/4,50]);
+    cube([6.9*$inch,board_z,50]);
 }
 */
 /* // fits on 33" x 28" board
@@ -182,7 +201,7 @@ translate([0,700,0]) {
     cube([33*$inch,3*$inch/4,50]);
 }
 translate([33*$inch,0,0]) {
-    cube([3*$inch/4, 28*$inch,50]);
+    cube([$board_z, 28*$inch,50]);
 }
 */
 
