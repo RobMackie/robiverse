@@ -162,7 +162,7 @@ module build_it(){
     }
 }
 
-translate([500,500,0]) {
+translate([$v_d/2,$v_d/2,0]) {
     build_it();
 }
 
