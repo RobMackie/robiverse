@@ -19,6 +19,7 @@ module vertical_tube() {
     }
 }
 
+
 module cuff(height) {
     difference() {
         cylinder(d=$ot_outer_d, h=height);
@@ -52,6 +53,7 @@ module bushing(flipover) {
     } 
 }
 
+
 module rotating_cuff(height) {
     height = height - (1/2 * $inch);
     union() {
@@ -72,9 +74,50 @@ module rotating_cuff(height) {
     }
 }
 
+$thrust_bushing_d = 2.1*$inch;
+module thrust_bushing() {
+    difference() {
+        cylinder(d=$thrust_bushing_d, h=1/2*$inch);
+        translate([0,0,-1]) {
+            cylinder(d=$v_d, h=1/2*$inch+2);
+        }
+    }
+}
+
+
+
+module horizontal_bolt() {
+    translate([0,0,0]) {
+        rotate([0,90,0]) {
+            cylinder(d=1/4*$inch, h=$thrust_bushing_d/2);
+        }
+        translate([$thrust_bushing_d/2,0,0]) {
+            rotate([0,90,0]) {
+                cylinder(d=1/2*$inch, h=1/8*$inch, $fn=6);
+            }
+        }
+    }
+}
+
+
+
+module bolt_ring() {
+    rotate([0,0,0]) {
+        horizontal_bolt();
+    }
+    rotate([0,0,120]) {
+        horizontal_bolt();
+    }
+    rotate([0,0,240]) {
+        horizontal_bolt();
+    }
+}
+
+
 module build_it(){
     translate([0,0,0]) {
-        color("silver") vertical_tube();
+       // color("silver") 
+        vertical_tube();
     }
     /* // a sample stick
     translate([50,50,10]) {
@@ -100,9 +143,26 @@ module build_it(){
         translate([0,0,78*$inch+50]) {  
             rotating_cuff(50);
         } 
+    }   
+   
+
+    translate([0,0,(39-0.6)*$inch]) {
+        color("silver") bolt_ring();
     }    
+    translate([0,0,(39-0.5)*$inch]) {
+       color("white") thrust_bushing(); 
+    }
     
 
+    translate([0,0,(78-0.6)*$inch]) {
+        color("silver") bolt_ring();
+    }    
+    translate([0,0,(78-0.5)*$inch]) {
+       color("white") thrust_bushing(); 
+    }
 }
 
-build_it();
+translate([500,500,0]) {
+    build_it();
+}
+
