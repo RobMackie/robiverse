@@ -1,3 +1,4 @@
+// 
 
 $inch = 25.4;
 $foot = 12 * $inch;
@@ -57,18 +58,26 @@ module bushing(flipover) {
 module rotating_cuff(height) {
     height = height - (1/2 * $inch);
     union() {
+        // 2 bushings
         color("white") bushing(0);
-        
         translate([0,0,height+1/2*$inch]) {
            color("white") bushing(1);        
         }
         
+        // the central metal part that the bushings hold in place
         translate([0,0,1/4*$inch]) {
            color("black") cuff(height);
         }    
-        translate([0,0,height/2 + 1/4*$inch]) {
-            rotate([90,0,0]) {
-               color("silver") cylinder(d=$inch, h=1000);
+        // to make the long arm
+        translate([0,-$ot_outer_d/4,height/2 + 1/4*$inch]) {
+            difference() {
+                rotate([90,0,0]) {
+                    color("silver") cylinder(d=$inch, h=1000);
+                }
+                // to scallop it so it fits the outer shell
+                translate([0,$inch/2,-$inch/2-1]) {
+                    cylinder(d=$ot_outer_d, h=$inch+2);
+                }
             }
         }
     }
@@ -83,8 +92,6 @@ module thrust_bushing() {
         }
     }
 }
-
-
 
 module horizontal_bolt() {
     translate([0,0,0]) {
@@ -162,7 +169,33 @@ module build_it(){
     }
 }
 
-translate([$v_d/2,$v_d/2,0]) {
-    build_it();
+module layout_parts() {
+    translate([20,0,0]) {
+        color("yellow") thrust_bushing();
+    }
+    translate([100,0,0]) {
+        rotating_cuff(50);
+    }
+    translate([200,0,0]) {
+        color("yellow") bushing();
+    }
+    translate([300,0,0]) {
+       color("yellow")  cuff(40);
+    }
+  
+    translate([0,0,0]) {
+        // blank
+    }   
 }
+
+$assemble = 1;
+translate([$v_d/2,$v_d/2,0]) {
+    if ($assemble) {
+        build_it();
+    } else {
+        layout_parts();
+    }
+}
+
+
 
