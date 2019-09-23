@@ -195,8 +195,8 @@ $flat_for_svg = 1;
 translate([160,700,0]) {
     cube([6.9*$inch,board_z,50]);
 }
-*/
-/* // fits on 33" x 28" board
+
+// fits on 33" x 28" board
 translate([0,700,0]) {
     cube([33*$inch,3*$inch/4,50]);
 }
