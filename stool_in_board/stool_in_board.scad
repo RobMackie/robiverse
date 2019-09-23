@@ -154,7 +154,7 @@ module buildit() {
             }
         }
         if ($not_slotted) {
-            translate([910,700,0]) {
+            translate([916,700,0]) {
                 rotate([0,0,180]) {
                     stool_leg_bottom();
                 }
@@ -181,7 +181,7 @@ module buildit() {
             }
         }
         if ($not_slotted) {
-            translate([(9.9+13.4)*$inch, 21*$inch,-0.1]) {
+            translate([(9.9+13.4)*$inch+6, 21*$inch,-0.1]) {
                 color("red") cylinder(d=10.8*$inch, h=40, $fn=64);
             }
         }
@@ -205,12 +205,16 @@ translate([33*$inch,0,0]) {
 }
 */
 
-if ($flat_for_svg) {
-    projection(cut=true) {
-        translate([0,0,-1]) rotate([0,0,0]) {
+translate([10,10,0]) {
+    rotate([0,0,5]) {
+        if ($flat_for_svg) {
+            projection(cut=true) {
+                translate([0,0,-1]) rotate([0,0,0]) {
+                    buildit();
+                }
+            }
+        } else {
             buildit();
         }
     }
-} else {
-    buildit();
 }

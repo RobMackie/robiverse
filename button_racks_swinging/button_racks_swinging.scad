@@ -1,4 +1,4 @@
-// 
+// A stab at visualizing the button holder
 
 $inch = 25.4;
 $foot = 12 * $inch;
@@ -6,8 +6,8 @@ $foot = 12 * $inch;
 $v_d = 1.25 * $inch; // Pole OD
 $v_h = 9 * $foot;    // Pole length
 
-$ot_inner_d=1.65 * $inch; //outter tube - ID
-$ot_outer_d=1.8 * $inch; //outter tube - OD
+$ot_inner_d=1.5 * $inch; //outer tube - ID
+$ot_outer_d=1.75 * $inch; //outer tube - OD
 
 $fn=128;
 
@@ -19,7 +19,6 @@ module vertical_tube() {
         // places for fixed bushings
     }
 }
-
 
 module cuff(height) {
     difference() {
@@ -75,7 +74,7 @@ module rotating_cuff(height) {
                     color("silver") cylinder(d=$inch, h=1000);
                 }
                 // to scallop it so it fits the outer shell
-                translate([0,$inch/2,-$inch/2-1]) {
+                translate([0,$ot_outer_d/4,-$inch/2-1]) {
                     cylinder(d=$ot_outer_d, h=$inch+2);
                 }
             }
@@ -83,7 +82,7 @@ module rotating_cuff(height) {
     }
 }
 
-$thrust_bushing_d = 2.1*$inch;
+$thrust_bushing_d = $ot_outer_d*1.1;
 module thrust_bushing() {
     difference() {
         cylinder(d=$thrust_bushing_d, h=1/2*$inch);
@@ -173,7 +172,7 @@ module layout_parts() {
     translate([20,0,0]) {
         color("yellow") thrust_bushing();
     }
-    translate([100,0,0]) {
+    translate([110,0,0]) {
         rotating_cuff(50);
     }
     translate([200,0,0]) {
@@ -189,7 +188,7 @@ module layout_parts() {
 }
 
 $assemble = 1;
-translate([$v_d/2,$v_d/2,0]) {
+translate([0,0,0]) {
     if ($assemble) {
         build_it();
     } else {
