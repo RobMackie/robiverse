@@ -61,7 +61,7 @@ module suction_cup() {
     }    
 }
 
-/* 4-40 threaded rod sans threads */
+/* 4-40 threaded rod sans threads  */
 $threaded_rod_d = 2.7;
 $threaded_rod_len = 40;
 module threaded_rod_four_forty () {

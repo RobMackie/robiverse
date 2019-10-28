@@ -154,7 +154,7 @@ module buildit() {
             }
         }
         if ($not_slotted) {
-            translate([916,700,0]) {
+            translate([$board_x/0.693/*916*/,700,0]) {
                 rotate([0,0,180]) {
                     stool_leg_bottom();
                 }
@@ -165,23 +165,27 @@ module buildit() {
                 cube([60,5,50]);
             }
         }
+        // left
         if ($slotted) {
-            translate([370,165,0]) {
+            translate([370/*370*/,165,0]) {
                 cube([60,5,50]);
             }
         }
+        
+        //right
         if ($not_slotted) {
-            translate([415,530,0]) {
+            translate([$board_x/1.53/*415*/,530,0]) {
                 cube([350,5,50]);
             }
         }
+        //HERE
         if ($slotted) {
-            translate([9.80*$inch, 6.5*$inch,-0.1]) {
+            translate([$board_x/2.55, 6.5*$inch,-0.1]) {
                 slotted_top();
             }
         }
         if ($not_slotted) {
-            translate([(9.9+13.4)*$inch+6, 21*$inch,-0.1]) {
+            translate([(($board_x/2.6)+$board_x/1.8), 21*$inch,-0.1]) {
                 color("red") cylinder(d=10.8*$inch, h=40, $fn=64);
             }
         }
@@ -205,8 +209,8 @@ translate([33*$inch,0,0]) {
 }
 */
 
-translate([10,10,0]) {
-    rotate([0,0,5]) {
+translate([0,0,0]) {
+    rotate([0,0,0]) {
         if ($flat_for_svg) {
             projection(cut=true) {
                 translate([0,0,-1]) rotate([0,0,0]) {
