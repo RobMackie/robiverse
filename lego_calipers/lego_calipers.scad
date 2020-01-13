@@ -1,5 +1,4 @@
 
-
 // LEGO constants
 $stud_interval = 8; //mm
 $P = $stud_interval;
@@ -77,6 +76,3 @@ inside_stop_bar();
 translate([25, 0, 0]) {
     outside_stop_bar();
 }
-
-
-
