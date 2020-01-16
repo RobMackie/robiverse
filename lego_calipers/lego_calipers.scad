@@ -307,5 +307,3 @@ if ($as_built) {
         scales();
     }    
 }
-
-
