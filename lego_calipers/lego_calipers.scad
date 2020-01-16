@@ -84,27 +84,34 @@ module outside_stop_bar() {
  */
 
 module top_slide_bottom() {
-    translate([0,0,0]) {
-        cube([$caliper_scale_max, 
-              $caliper_body_width,
-              $wood_h]);
-    }
-    // head piece
-    
-    translate([$out_width,$caliper_body_width,0]) {
-        inside_stop_bar();
-    }
-    translate([$out_width,0,0]) {
-        rotate([0,0,180]) {
-        outside_stop_bar();
+    union() {
+        translate([0,0,0]) {
+            cube([$caliper_scale_max, 
+                  $caliper_body_width,
+                  $wood_h]);
         }
-    }    
+        // head piece
+        
+        translate([$out_width,$caliper_body_width-0.1,0]) {
+            inside_stop_bar();
+        }
+        translate([$out_width,0,0]) {
+            rotate([0,0,180]) {
+            outside_stop_bar();
+            }
+        }  
+    }  
 }
 module top_slide_top() {
-    translate([0,$interlock,0]) {
-        cube([$caliper_scale_max, 
-              $caliper_body_width-2*$interlock,
-              $wood_h]);
+    difference() {
+        translate([0,$interlock,0]) {
+            cube([$caliper_scale_max, 
+                  $caliper_body_width-2*$interlock,
+                  $wood_h]);
+        }
+        translate([$out_width*2+4.7,$interlock,0]) {
+            cube([0.25,0.3,$wood_h]);
+        }
     }
 }
 
@@ -142,7 +149,7 @@ module bottom_slide_bottom() {
         }
         
         translate([$out_width,$caliper_body_width+$interlock,$wood_h]) {
-            rotate([0,180,0]) {
+            rotate([0,180,-0.1]) {
                 inside_stop_bar();
             }
         }
@@ -200,19 +207,19 @@ module scales() {
         // text scale on top_side_top
         
         /* stud side */
-        translate([15,3*$interlock,3*$wood_h]) {
+        translate([15,3*$interlock+1,3*$wood_h]) {
              color("black") text("STUDS", size=5, font="Liberation Sans");
         }
         for($step = [0 : 1 : $caliper_scale_max/$P-7]) {
             if(! $step%5) {
-                translate([2*$out_width+4+$step*$P-2,4*$interlock,3*$wood_h]) {  
+                translate([2*$out_width+4+$step*$P-2,4*$interlock+1,3*$wood_h]) {  
                     color("black") text(str($step), size=5, font="Liberation Sans");
             } 
-            translate([2*$out_width+4+$step*$P,1.5*$interlock,3*$wood_h]) {  
+            translate([2*$out_width+4+$step*$P,1.5*$interlock+1,3*$wood_h]) {  
                     color("black") text("|", size=5, font="Liberation Sans");
             }               
         } else {
-            translate([2*$out_width+4+$step*$P,1.5*$interlock,3*$wood_h]) {  
+            translate([2*$out_width+4+$step*$P,1.5*$interlock+1,3*$wood_h]) {  
                     color("black") text("|", size=5, font="Liberation Sans");
                 }       
             }
@@ -225,14 +232,14 @@ module scales() {
         }
         for($step = [0 : 1 : $caliper_scale_max/$short_brick_h-$short_brick_h*6]) {
             if(! $step%3) {
-                translate([2*$out_width+4+$step*$short_brick_h,$offset+3,3*$wood_h]) {  
+                translate([2*$out_width+4+$step*$short_brick_h,$offset+2,3*$wood_h]) {  
                     color("black") text(str($step/3), size=2.5, font="Liberation Sans");          
             } 
-            translate([2*$out_width+4+$step*$short_brick_h,$offset+8,3*$wood_h]) {  
+            translate([2*$out_width+4+$step*$short_brick_h,$offset+7,3*$wood_h]) {  
                     color("black") text("|", size=2.5, font="Liberation Sans");
                 }               
         } else {
-                translate([2*$out_width+4+$step*$short_brick_h,$offset+8,3*$wood_h]) {  
+                translate([2*$out_width+4+$step*$short_brick_h,$offset+7,3*$wood_h]) {  
                     color("black") text("|", size=2.5, font="Liberation Sans");
                 }       
             }
@@ -250,19 +257,19 @@ $top_mark = 4;
 
 
 //choose one of the above 4 choices
-$print_choice = 1;
+$print_choice = 2;
 
 if ($as_built) {
     translate([0,$interlock,$wood_h]) {
         top_slide();
-    }
+    }/*
     translate([0,0,0]) {
         bottom_slide();
     }
     
     translate([2*$out_width,1,3*$wood_h]) {
         single_mark();
-    }    
+    }   */ 
     
     translate([2*$out_width,1+$caliper_body_width,3*$wood_h]) {
         single_mark();
@@ -294,8 +301,8 @@ if ($as_built) {
                 } 
             } 
             if ($print_choice == $top) {
-                translate([0,0,0]) {
-                top_slide_bottom();
+                translate([0,0,-1]) {
+                    top_slide_bottom();
                 }
                 translate([0,95,0]) {
                     top_slide_top();
