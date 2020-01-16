@@ -240,14 +240,17 @@ module scales() {
     }
 }
 
+
 $as_built = 1;
 
 $bottom = 1;
 $top = 2;
 $bottom_mark = 3;
 $top_mark = 4;
+
+
 //choose one of the above 4 choices
-$print_choice = $top_mark;
+$print_choice = 1;
 
 if ($as_built) {
     translate([0,$interlock,$wood_h]) {
