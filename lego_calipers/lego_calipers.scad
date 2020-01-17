@@ -247,17 +247,35 @@ module scales() {
     }
 }
 
+module thanks_fiona() {
+    translate([0,0,0]) {
+         color("black") text("Fiona - Thank you!", 
+                size=10, 
+                font="Liberation Sans");
+    }
+}
 
-$as_built = 1;
+module thanks_sam() {
+    translate([0,0,0]) {
+         color("black") text("Sam - Thank you!", 
+                size=10, 
+                font="Liberation Sans");
+    }
+}
+
+
+$as_built = 0;
 
 $bottom = 1;
 $top = 2;
 $bottom_mark = 3;
 $top_mark = 4;
+$tnx_sam = 5;
+$tnx_fiona = 6;
 
 
 //choose one of the above 4 choices
-$print_choice = 2;
+$print_choice = 6;
 
 if ($as_built) {
     translate([0,$interlock,$wood_h]) {
@@ -315,7 +333,17 @@ if ($as_built) {
     }
     if ($print_choice == $bottom_mark) {
         scales();
-    }    
+    }   
+    if ($print_choice == $tnx_sam) {
+        translate([0,0,$wood_h]) {
+            thanks_sam();
+        }
+    }
+    if ($print_choice == $tnx_fiona) {
+        translate([0, 0,$wood_h]) {
+            thanks_fiona();
+        }
+    }
 }
 
 
