@@ -136,36 +136,75 @@ module top_slide() {
  */
 $bottom_len_div = 2.5;
 module bottom_slide_bottom() {
-    union() {
-        translate([0,0,0]) {
-            cube([$caliper_scale_max/$bottom_len_div,
-                  $caliper_body_width+$interlock*2,
-                  $wood_h]);
-        }
-        translate([0,$interlock+$caliper_body_width/4,0]) {
-            cube([$caliper_scale_max,
-                  $caliper_body_width/2,
-                  $wood_h]);
-        }
-        
-        translate([$out_width,$caliper_body_width+$interlock,$wood_h]) {
-            rotate([0,180,-0.1]) {
-                inside_stop_bar();
+    difference() {
+        union() {
+            translate([0,0,0]) {
+                cube([$caliper_scale_max/$bottom_len_div,
+                      $caliper_body_width+$interlock*2,
+                      $wood_h]);
+            }
+            translate([0,$interlock+$caliper_body_width/4,0]) {
+                cube([$caliper_scale_max,
+                      $caliper_body_width/2,
+                      $wood_h]);
+            }
+            
+            translate([$out_width,$caliper_body_width+$interlock,$wood_h]) {
+                rotate([0,180,-0.1]) {
+                    inside_stop_bar();
+                }
+            }
+            translate([$out_width,$interlock,$wood_h]) {
+                rotate([0,180,180]) {
+                    outside_stop_bar();
+                }
             }
         }
-        translate([$out_width,$interlock,$wood_h]) {
-            rotate([0,180,180]) {
-                outside_stop_bar();
-            }
+        translate([52,-0.01,-$wood_h]) {
+            cube([1, 0.5, 3*$wood_h]);
+        } 
+        translate([52,$caliper_body_width+2*$interlock-0.5,-$wood_h]) {
+            cube([1, 0.6, 3*$wood_h]);
+        }         
+    }
+}
+module bottom_slide_middle_right() {
+    difference() {
+        cube([$caliper_scale_max/$bottom_len_div-2*$out_width, $interlock, $wood_h]);
+        translate([4.4,-0.01,-$wood_h]) {
+            cube([1, 0.5, 3*$wood_h]);
+        }   
+    }
+}
+
+module bottom_slide_middle_left() {
+    difference() {
+        cube([$caliper_scale_max/$bottom_len_div-2*$out_width, $interlock, $wood_h]);
+        translate([4.4,1*$interlock-0.5,-$wood_h]) {
+            cube([1, 1, 3*$wood_h]);
+        }  
+    }
+}
+
+module bottom_slide_top_right() {
+    difference() {
+        cube([$caliper_scale_max/$bottom_len_div-2*$out_width, 
+              $interlock*2, 
+              $wood_h]);
+        translate([4.4,-0.01,-1]) {
+            cube([1, 0.5, 5*$wood_h]);
         }
     }
 }
-module bottom_slide_middle() {
-     cube([$caliper_scale_max/$bottom_len_div-2*$out_width, $interlock, $wood_h]);
-}
-
-module bottom_slide_top() {
-     cube([$caliper_scale_max/$bottom_len_div-2*$out_width, $interlock*2, $wood_h]);
+module bottom_slide_top_left() {
+    difference() {
+        cube([$caliper_scale_max/$bottom_len_div-2*$out_width, 
+              $interlock*2, 
+              $wood_h]);
+        translate([4.4,2*$interlock-0.49,-1]) {
+            cube([1, 0.5, 5*$wood_h]);
+        }        
+    }
 }
 
 module bottom_slide() {
@@ -176,21 +215,21 @@ module bottom_slide() {
             }    
             // left
             translate([2*$out_width,0,$wood_h]) {
-                bottom_slide_middle();
+                bottom_slide_middle_right();
             }
             translate([2*$out_width,0,$wood_h*2]) {
-                bottom_slide_top();
+                bottom_slide_top_right();
             } 
             //right
             translate([2*$out_width,
                       $caliper_body_width+$interlock,
                       $wood_h]) {
-                bottom_slide_middle();
+                bottom_slide_middle_left();
             }
             translate([2*$out_width,
                        $caliper_body_width,
                        $wood_h*2]) {
-                bottom_slide_top();
+                bottom_slide_top_left();
             }
         }
     }  
@@ -275,42 +314,42 @@ $tnx_fiona = 6;
 
 
 //choose one of the above 4 choices
-$print_choice = 6;
+$print_choice = 4;
 
 if ($as_built) {
     translate([0,$interlock,$wood_h]) {
         top_slide();
-    }/*
+    }
     translate([0,0,0]) {
         bottom_slide();
     }
     
     translate([2*$out_width,1,3*$wood_h]) {
         single_mark();
-    }   */ 
+    }   
     
     translate([2*$out_width,1+$caliper_body_width,3*$wood_h]) {
         single_mark();
     } 
     
     translate([0,0,0]) {
-        scales();
+    //    scales();
     }
 } else {
     translate([0,$out_reach,0]) {
         projection(cut=true) {
             if ($print_choice == $bottom) {
                 translate([0,-$out_reach,0]) {
-                    bottom_slide_middle();
+                    bottom_slide_middle_right();
                 }
                 translate([0,-$out_reach+5,0]) {
-                    bottom_slide_middle();
+                    bottom_slide_middle_left();
                 }        
                 translate([0,-$out_reach+10,0]) {
-                    bottom_slide_top();
+                    bottom_slide_top_right();
                 }
                 translate([0,-$out_reach+18,0]) {
-                    bottom_slide_top();
+                    bottom_slide_top_left();
                 }
                 translate([0,25,0]) {
                     rotate([0,0,0]) {
