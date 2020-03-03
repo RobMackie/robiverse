@@ -6,13 +6,14 @@ $table_r = 15*$inch;
 $rope_r = 6;
 
 
-$dado_long = $inch*6;
+// $dado_long = $inch*6; // for angle arm
+$dado_long = $inch * 6; // for horn
 $dado_wide = $plyboard_h;
 $dado_from_edge = $inch*1;
 $dado_deep=$plyboard_h;
 
 $gran = 256;
-$corner_relief = 3*$inch/16;
+$corner_relief = 0;// 1*$inch/16;
 
 $arm_h = 750;
 $arm_offset = 250;
@@ -23,7 +24,48 @@ $angle_offset_bottom = -$angle_offset+$angle_twist;
 $angle_offset_top = $angle_offset-$angle_twist;
 
 $cleat_long = 2*$inch;
-    
+  
+module horn_primitive() {
+    union() {
+        rotate([0,0,180]) {
+            translate([-380,-100,0]) {
+                difference() {
+                    cylinder(r=390, h=$plyboard_h, $fn=$gran); 
+                    translate([-100,-0,-2]) {
+                        cylinder(r=400, h=$plyboard_h+4, $fn=$gran);
+                    }
+                    $move = 80;
+                    translate([-10,180-$move,-1]) {
+                        cube([390,210+$move,$plyboard_h+2]);
+                    }
+
+                }             
+            }
+        }
+
+    }
+}
+
+module horn() {
+    $center=207;
+    union() {
+        translate([160,0,0]) {
+            rotate([90,0,180]) {
+                scale([1.3, 1.7, 1]) horn_primitive();
+            }
+        }
+        translate([3.66,0,0]) {
+            cube([100, $plyboard_h,$plyboard_h]);
+        }
+        translate([-$center,0,800]) {
+            cube([15, $plyboard_h, 15], center=false);
+        }  
+        translate([-$center,0,746]) {
+            cube([15, $plyboard_h, 30], center=false);
+        }         
+    }
+}
+  
 module cleat() { 
     translate([0,0,$inch/2]) {
         difference() {
@@ -70,8 +112,13 @@ module base(angle_offset) {
                     cylinder(r=$corner_relief, h=$plyboard_h+20);
                 }
             }
+            translate([0,0,-1]) {
+                rotate([0,0,90]) {
+                    color("blue") cleat();
+                }
+            }                      
         }
-    }
+    }  
 }
 
 $knee_r = 3*$dado_long/4;
@@ -130,15 +177,12 @@ module arm() {
     
 }
 
-module rope(length) {
-    
-}
-
 
 module table_half(angle) {
     color("gray") base(angle_offset = angle);
-    translate([(2*$table_r)-$dado_from_edge-$dado_long,$table_r-$plyboard_h/2,$plyboard_h - $dado_deep]) {
-        color("brown") arm();
+    translate([(2*$table_r)-$dado_from_edge-$dado_long - 3.65,$table_r-$plyboard_h/2,$plyboard_h - $dado_deep]) {
+        //color("brown") arm();
+        horn();
     }
 }
 
@@ -146,16 +190,26 @@ module table() {
     table_half($angle_offset_bottom);
     translate([$table_r*2,0,$arm_h+$arm_offset]) {
         rotate([0,180,0]) {
-            table_half($angle_offset_top);   
+            table_half($angle_offset_top);  
+            translate([$table_r,$table_r,0]) {
+                rotate([0,0,90]) {
+                    cleat();
+                }
+            }        
         }
     }
     
     //simulated rope
     translate([$table_r, $table_r, 210]) {
-        cylinder(r=$plyboard_h/4, h=580);
+        cylinder(r=$plyboard_h/4, h=650);
     }
     
-    
+    translate([$table_r,$table_r,0]) {
+        rotate([0,0,90]) {
+            cleat();
+        }
+    }
+            
     translate([$table_r, $table_r, $plyboard_h-$dado_deep]) {
         for (position = [0,1,2]) {
             rotate((position * 120+$angle_offset_bottom)*[0,0,1]) {
@@ -188,7 +242,7 @@ $cut_top_disk = 2;
 $cut_arm = 3;
 
 $what_to_cut = $cut_arm;
-$2d = 0;
+$2d = 1;
 
 module parts_layout() {
     if ($what_to_cut == $cut_cleats) {
@@ -212,14 +266,16 @@ module parts_layout() {
         }
     }
     if ($what_to_cut == $cut_arm) {
-        translate([$dado_long,0,0]) {
+        translate([$dado_long+21,0,0]) {
             rotate([-90,180,0]) {
-                arm();
+                //arm();
+                horn();
             }
         }
-        translate([$dado_long*2+30,0,0]) {
+        translate([$dado_long*2+45,0,0]) {
             rotate([-90,180,0]) {
-                arm();
+                //arm();
+                horn();
             }
         }
     }
@@ -237,3 +293,12 @@ if ($2d) {
       table();
    }
 }
+
+/*
+translate([400,400,0]) {
+    cube([30,10,780]);
+}
+*/
+
+
+
