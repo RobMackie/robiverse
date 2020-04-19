@@ -34,9 +34,11 @@ NewPing::NewPing(uint8_t trigger_pin, uint8_t echo_pin, int max_cm_distance) {
 // ---------------------------------------------------------------------------
 
 unsigned int NewPing::ping() {
-	if (!ping_trigger()) return NO_ECHO;                // Trigger a ping, if it returns false, return NO_ECHO to the calling function.
-	while (*_echoInput & _echoBit)                      // Wait for the ping echo.
-		if (micros() > _max_time) return NO_ECHO;       // Stop the loop and return NO_ECHO (false) if we're beyond the set maximum distance.
+	if (!ping_trigger()) return NO_ECHO; // Trigger a ping, if it returns false, return NO_ECHO to the calling function.
+	while (*_echoInput & _echoBit) // Wait for the ping echo.
+		if (micros() > _max_time) return NO_ECHO;  
+                    // Stop the loop and return NO_ECHO (false) 
+                    // if we're beyond the set maximum distance.
 	return (micros() - (_max_time - _maxEchoTime) - 5); // Calculate ping time, 5uS of overhead.
 }
 

@@ -1,6 +1,6 @@
 $inch = 25.4;
 
-$top = 0;
+$top = 1;
 
 module bolt_chassis(height) {
     difference() {
@@ -35,11 +35,11 @@ module top_body() {
         }
         // hex head
         translate([0,0,8]) {
-            cylinder(d=(7/16*$inch)+0.5, h=8, $fn=6);
+            cylinder(d=13, h=8, $fn=6);
         }
         // ease the edges of the hex hole
         translate([0,0,11.5]) {
-            cylinder(d1=0.3*$inch, d2=0.6*$inch, h=5, $fn=6);
+            cylinder(d1=10, d2=17, h=5, $fn=6);
         }
         // bolt thru hole
         translate([0,0,-1]) {
@@ -78,3 +78,12 @@ if ($top) {
         }
     }
 }
+
+/*
+translate([0,0,30]) {
+    cylinder(d=10, h=5, $fn=64);
+}
+translate([0,0,30]) {
+    cylinder(d=10, h=10, $fn=6);
+}
+*/
