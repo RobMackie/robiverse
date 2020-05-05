@@ -242,7 +242,7 @@ $cut_top_disk = 2;
 $cut_arm = 3;
 
 $what_to_cut = $cut_arm;
-$2d = 1;
+$2d = 0;
 
 module parts_layout() {
     if ($what_to_cut == $cut_cleats) {
