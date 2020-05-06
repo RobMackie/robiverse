@@ -28,13 +28,16 @@ module make_surface_elem(scaling) {
 }
 
 //render() {
+union() {
+    cylinder(r=9.5,h=1);
     difference() {
         layer(0,0,0);
-/*
+        /*
         scale(0.99) {
             layer(0,0,0);
         }
-*/
+        */
     }
+}
 
 //}

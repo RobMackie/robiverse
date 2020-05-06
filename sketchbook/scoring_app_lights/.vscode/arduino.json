@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "scoring_app_lights.ino",
+    "port": "/dev/ttyS0"
+}

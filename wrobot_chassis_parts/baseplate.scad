@@ -105,17 +105,17 @@ module main_plate() {
 	   translate([$slab_width/2 - $rear_wheel_slot/2, 
 	              $slab_length-$rear_wheel_diam,
 	              -1]) {
-	      cube([$rear_wheel_slot, $rear_wheel_diam,$eigth+2]);
+	      cube([$rear_wheel_slot, $rear_wheel_diam +1,$eigth+2]);
 	   }
 	   // mounts for vertical spacers
       translate([3,0,0]) {
-	      slots(3,10);
+	      slots(4,10);
       }
       translate([$slab_width-6,0,0]) {
-	      slots(3,10);
+	      slots(4,10);
       }
       translate([0,3,0]) {
-         end_slots(3,10);
+         end_slots(4,10);
       }
    }
 }
@@ -125,22 +125,22 @@ module top_plate() {
 	   cube([$slab_width,$slab_length,$eigth]);
 	   // mounts for vertical spacers
       translate([3,0,0]) {
-	      slots(3,10);
+	      slots(4,10);
       }
       translate([$slab_width-6,0,0]) {
-	      slots(3,10);
+	      slots(4,10);
       }
       translate([20,20,-1]) {
           duemilanove_hole_pattern_y($eigth+2);
       }
       translate([0,3,0]) {
-         end_slots(3,10);
+         end_slots(4,10);
       }
 	   // rear wheel well
 	   translate([$slab_width/2 - $rear_wheel_slot/2, 
 	              $slab_length-$rear_wheel_diam,
 	              -1]) {
-	      cube([$rear_wheel_slot, $rear_wheel_diam,$eigth+2]);
+	      cube([$rear_wheel_slot, $rear_wheel_diam + 1,$eigth+2]);
 	   }
    }
 }
@@ -162,7 +162,7 @@ module make_parts() {
 	}
 }
 
-$2d = 0;
+$2d = 1;
 if ($2d) {
     projection(cut=true) {
        translate([0,0,0]) rotate([0,0,0]) {
@@ -170,6 +170,7 @@ if ($2d) {
        }
 }
 } else {
+    // cube([11*$inch, 11*$inch, 1]);
     make_parts();
 }
 
