@@ -12,7 +12,6 @@ $filet=5;
 // Utility functions
 module longside() {
     // Long side
-
     difference() {
         cube([$thick, $length + $thick*2, $height]);
         translate([-3,0.512*$length, (3.742 * $length) * -0.9933]) {
@@ -30,11 +29,7 @@ module longside() {
             }
         }
 
-        if (0) { // measuring stick
-            translate([0,0,$height-10]) {
-                cube([1,150.74+14.45,5]);
-            } 
-        }
+
         // clearance holes starting from front
         translate([-5,14.45,$height-3]) {
             rotate([0,90,0]) {
@@ -65,7 +60,14 @@ module longside() {
             rotate([0,90,0]) {
                 cylinder(r=4, h=10);
             }
-        }      
+        }  
+        // wire port
+        translate([-1,$length-(mm(3.25)+mm(0.5)),-0.01]) {
+            rotate([0,0,0]) {
+                cube([mm(0.5),mm(3.25),mm(1)]);
+            }
+        }  
+        
     }
 }
 
@@ -94,10 +96,12 @@ module vertical_disk_x(rv,hv) {
 module wing() {
     union() {
         translate([0,0,0]) {
-            cube([$width/3, $thick, $height]);
+            //cube([$width/3, $thick, $height]);
+            cube([$width, $thick, $height]);
         }
+        translate([$width*.67, 0,0]) {
         hull() {
-            translate([$width,0,0]) {
+            translate([$width/1.5,0,0]) {
                 vertical_disk_x(rv=$filet, hv=$thick);
             }
             translate([1/3*$width-$filet,0,$height-2*$filet]) {
@@ -106,6 +110,7 @@ module wing() {
             translate([1/3*$width-$filet,0,0]) {
                 vertical_disk_x(rv=$filet, hv=$thick);
             }            
+        }
         }
     }
 }
@@ -203,19 +208,34 @@ module pc_front_wings() {
 }
 
 module pc_back_wings() {
-   union() {
-        translate([$width,2*$thick + $length,0]) {        
-            wing();
-        }
-        translate([$thick, 2*$thick + $length, 0]) {
-            shortside();
-        }
-        translate([$thick,3*$thick + $length,0]) {
-            rotate([0,0,180]) {
+    difference() {
+       union() {
+            translate([$width,2*$thick + $length,0]) {        
                 wing();
             }
+            translate([$thick, 2*$thick + $length, 0]) {
+                shortside();
+            }
+            translate([$thick,3*$thick + $length,0]) {
+                rotate([0,0,180]) {
+                    wing();
+                }
+            }
+        }    
+        translate([-65,330,34]) {
+            translate([0,-10,20]) {
+                rotate([-90,0,0]) {
+                   color("red") cylinder(d=5, h=20, $fn=64);
+                }
+            }
+            translate([0,-10,-20]) {
+                rotate([-90,0,0]) {
+                  color("red")  cylinder(d=5, h=20, $fn=64);
+                }
+            }
+            color("blue") cube(size = [47,10,27.1], center=true);
         }
-    }    
+    }
 }
 // Assembly functions
 module assembly_built() {
@@ -230,7 +250,14 @@ module assembly_built() {
 }
 
 module assembly_flat() {
-    $space = 2;
+    if (0) { // measuring stick
+        translate([220,0,5]) {
+            color("red") cube([1,373,5]);
+            translate([2,0,0]) {
+            }
+        } 
+    }
+    $space = 10;
     translate([$height,0,0]) {
         rotate([0,-90,0]) {
             pc_left_long();
@@ -243,13 +270,13 @@ module assembly_flat() {
         }
     }
     
-    translate([-$thick,$length+5*$space,$thick]) {    
+    translate([-$thick,$length+2*$space,$thick]) {    
         rotate([-90,0,0]) {
             pc_front_short();
         }
     }    
     
-    translate([$width+$space,$length+5*$space,2*$thick]) {
+    translate([$width+$space,$length+9*$space,2*$thick]) {
         rotate([-90,0,0]) {
             translate([0,-$length,0]) {
                 pc_back_short();
@@ -257,7 +284,7 @@ module assembly_flat() {
         }
     }
     
-    translate([0,$length+2*$height+6*$space,0]) {
+    translate([0,$length+2*$height+3*$space,0]) {
         rotate([90,0,0]) {
             translate([-$thick-$thick/2,-$thick,0]) {
                 pc_front_fill();
@@ -273,13 +300,13 @@ module assembly_flat() {
             }
         }
     }
-    translate([2*$height+$filet+$space, $width+2*$filet, $thick]) {
+    translate([2*$height+$filet+2*$space, $width+2*$filet+32, $thick]) {
         rotate([90,0,90]) {
             pc_front_wings();
         }
     }
    
-    translate([3*$height+2*$filet+ 2*$space, 0,0]) {
+    translate([3*$height+2*$filet+ 3*$space, 0+32,0]) {
         rotate([90,0,90]) {
             translate([$width+2*$filet,-$length+-2*$thick,0]) {
                 pc_back_wings();
