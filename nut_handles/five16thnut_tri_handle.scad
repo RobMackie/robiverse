@@ -2,6 +2,9 @@
  * 5/16" bolt or nut handle
  */
 
+// this puts the disk in the top
+$snapfit = 1;
+
 $inch = 25.4;
 
 module bolt_chassis(height) {
@@ -54,5 +57,10 @@ translate([25,0,0]) {
     union() {
         top_body();
         bolt_chassis(23);
+    }
+}
+if ($snapfit) {
+    translate([25,0,18.2]) {
+        color([1,1,0]) cylinder(r=14,h=5,$fn=128);   
     }
 }
