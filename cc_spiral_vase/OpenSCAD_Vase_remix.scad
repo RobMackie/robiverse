@@ -8,29 +8,30 @@
 //Thickness of the ground plate
 ground_plate_thickness  = 5;     //[1:20]
 //Outer diameter at the bottom
-basediameter            = 50;    //[20:100]
+basediameter            = 140;    //[20:100]
 //Relative to the basediameter
 wall_thickness          = 4;     //[1:10]
 //Total height (in mm)
-height                  = 100;   //[5:200]
+height                  = 280;   //[5:200]
 star_points             = 8;     //[5:1:12]
 //The indentation of the star (i.e. its "pointy-ness") 
-indent                  = 0.9;   //[0.6:0.05:1.0]
+indent                  = 0.99;   //[0.6:0.05:1.0]
 
 
 /* [Advanced] */
 //Render with a hollow center (like the original) or as a solid (for printing in vase mode)?
 solid                   = 1;     //[0:Hollow,1:Solid]
 //Stepsize in height for generating elements
-delta_h                 = 1;     //[1:1:10]
+delta_h                 = 0.5;     //[1:0.1:10]
 //Ratio of the indent at the neck
-pinch                   = 0.4;     //[0.2:0.05:0.5]
+pinch                   = .5;     //[0.2:0.05:0.5] 0.5 looks normal. - is no pinch, 1 is maximum
 //Total twist across the entire height
-twist                   = -400;   //[0:300]
+twist                   = -200;   //[0:300]
+indent_coefficient      = 1.9; // 0.1 makes a ton of pancakes, 0.6 is 2 nodes, 1.9 is even - not indented. 1 is default , 100 is effectively a cylinder (moves the neck pinch point up or down)
 
 
 
-function dia_mod(z) = ( pinch * sin( z / height * 360 ) + 1 ) * basediameter;
+function dia_mod(z) = ( pinch * sin( z / indent_coefficient / height * 360 ) + 1 ) * basediameter;
 function scaler(a,b,i) = a[i] * b[i] / b[i-1];
 function polar_to_cart(r,a) = [r*cos(a),r*sin(a)];
 function star_coords(n,r_in,r_out) = [for(i=[0:2*n-1]) [i % 2 > 0 ? r_in : r_out,360/(n*2)*i]];
